@@ -26,6 +26,9 @@ describe('UserRepositoryMemory', () => {
       service.getUsers().subscribe((result) => {
         expect(result).toEqual([
           {
+            name: 'Joana',
+          },
+          {
             name: 'Jhon',
           },
         ]);
