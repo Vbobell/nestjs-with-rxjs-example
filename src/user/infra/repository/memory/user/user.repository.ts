@@ -14,13 +14,13 @@ export class UserRepositoryMemory implements UserRepository {
    * @description
    *  QUANDO Busca os usuários e faz a conversão para a o tipo `User[]`.
    *
-   *  E através da função `mapEntitiesToDomain`.
+   *  E através da função `mapEntitiesToDomain`, mapeia os objetos.
    *
    *  ENTÃO retorna a lista de usuários.
    *
    */
   getUsers(): Observable<User[]> {
-    return this.mapEntitiesToDomain(USERS);
+    return of(USERS).pipe(this.mapEntitiesToDomain);
   }
 
   /**
@@ -28,11 +28,11 @@ export class UserRepositoryMemory implements UserRepository {
    * @description
    *  QUANDO executada a função.
    *
-   *  E é recebido por parametro as entidades do tipo `UserEntityMemory`.
+   *  E é recebido por parametro o `Observable` com as entidades do tipo `UserEntityMemory`.
    *
    *  E converte um objeto para o tipo `Observable`.
    *
-   *  E em conjunto com o operador do rxjs `map` faz um mapeamento da stream de dados do `Observable`.
+   *  E em conjunto com o operador do rxjs `map` que manipula a stream de dados do `Observable`.
    *
    *  E através da função de callback do `map`.
    *
@@ -41,14 +41,16 @@ export class UserRepositoryMemory implements UserRepository {
    * @param userEntityMemory array de entidades do JSON.
    */
   private mapEntitiesToDomain(
-    userEntityMemory: UserEntityMemory[],
+    userEntitiesMemory: Observable<UserEntityMemory[]>,
   ): Observable<User[]> {
-    return of(userEntityMemory).pipe(
-      map((users) => {
-        return users.map((user) => {
-          return {
-            name: user.name,
-          } as User;
+    return userEntitiesMemory.pipe(
+      map((userEntities) => {
+        return userEntities.map((userEntity) => {
+          const user: User = {
+            name: userEntity.name,
+          };
+
+          return user;
         });
       }),
     );
