@@ -4,9 +4,10 @@ Esse projeto tem o intuito de exemplificar como manipular o padrão `Observable`
 
 ## Lista de conteúdos
 
-- [Observable](https://github.com/Vbobell/nestjs-observable-example/docs/rxjs-observable.md)
-- [map](https://github.com/Vbobell/nestjs-observable-example/docs/rxjs-map.md)
-- [of](https://github.com/Vbobell/nestjs-observable-example/docs/rxjs-of.md)
+- [Página inicial](https://github.com/Vbobell/nestjs-observable-example)
+- [Observable](https://github.com/Vbobell/nestjs-observable-example/rxjs-observable)
+- [map](https://github.com/Vbobell/nestjs-observable-example/rxjs-map)
+- [of](https://github.com/Vbobell/nestjs-observable-example/rxjs-of)
 
 ## Execução
 
