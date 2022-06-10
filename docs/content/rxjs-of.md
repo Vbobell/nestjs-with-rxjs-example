@@ -1,7 +1,6 @@
 ## of()
 
-Essa função do `rxjs` transforma um objeto natural javascript em um `Observable`,
-onde permite também mais de um parametro de execução.
+Essa função do `rxjs` transforma uma propriedade, objeto, classe no tipo `Observable`.
 
 ### Exemplo
 

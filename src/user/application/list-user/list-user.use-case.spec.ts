@@ -1,12 +1,12 @@
 import { Observable } from 'rxjs';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { User } from '@/app/user/domain/user/interface/user.interface';
-import { UserRepository } from '@/app/user/domain/user/abstract/user.repository';
-import { ListUserUseCase } from '@/app/user/application/list-user.use-case';
+import { User } from '@/app/user/domain/interface/user.interface';
+import { UserRepository } from '@/app/user/domain/abstract/user.repository';
+import { ListUserUseCase } from '@/app/user/application/list-user/list-user.use-case';
 
 describe('ListUserUseCase', () => {
-  let service: ListUserUseCase;
+  let useCase: ListUserUseCase;
   let repository: UserRepository;
 
   beforeEach(async () => {
@@ -24,12 +24,12 @@ describe('ListUserUseCase', () => {
       ],
     }).compile();
 
-    service = module.get<ListUserUseCase>(ListUserUseCase);
+    useCase = module.get<ListUserUseCase>(ListUserUseCase);
     repository = module.get<UserRepository>(UserRepository);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(useCase).toBeDefined();
     expect(repository).toBeDefined();
   });
 
@@ -55,7 +55,7 @@ describe('ListUserUseCase', () => {
         }),
       );
 
-      service.execute().subscribe((result) => {
+      useCase.execute().subscribe((result) => {
         expect(result).toEqual(users);
         done();
       });
@@ -69,7 +69,7 @@ describe('ListUserUseCase', () => {
         }),
       );
 
-      service.execute().subscribe((result) => {
+      useCase.execute().subscribe((result) => {
         expect(result).toEqual([]);
         done();
       });

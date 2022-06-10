@@ -1,7 +1,7 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-import { User } from '@/app/user/domain/user/interface/user.interface';
+import { User } from '@/app/user/domain/interface/user.interface';
 
 type UserParams = Pick<User, 'name'>;
 

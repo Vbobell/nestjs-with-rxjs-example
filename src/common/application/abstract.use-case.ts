@@ -1,3 +1,3 @@
-export abstract class AbstractUseCase<T, K> {
+export abstract class UseCase<T, K> {
   abstract execute(params?: T): K;
 }
