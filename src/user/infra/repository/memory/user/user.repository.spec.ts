@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { UserRepositoryMemory } from '@/app/user/infra/repository/memory/user/user.repository';
+import { UserRepositoryMemory } from '@app/user/infra/repository/memory/user/user.repository';
 
 describe('UserRepositoryMemory', () => {
   let useCase: UserRepositoryMemory;

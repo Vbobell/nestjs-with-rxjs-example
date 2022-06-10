@@ -10,6 +10,6 @@ export default {
   testEnvironment: 'node',
   modulePaths: ['<rootDir>/'],
   moduleNameMapper: {
-    '^@/app/(.*)$': '<rootDir>/$1',
+    '^@app/(.*)$': '<rootDir>/$1',
   },
 };

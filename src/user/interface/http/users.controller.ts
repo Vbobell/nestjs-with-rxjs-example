@@ -1,9 +1,10 @@
-import { Observable } from 'rxjs';
 import { Controller, Get, HttpCode } from '@nestjs/common';
 import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
+import { Observable } from 'rxjs';
 
-import { ListUserUseCase } from '@/app/user/application/list-user/list-user.use-case';
-import { UserDTO } from '@/app/user/domain/dto/user.dto';
+import { UserDTO } from '@app/user/domain/dto/user.dto';
+
+import { ListUserUseCase } from '@app/user/application/list-user/list-user.use-case';
 
 @Controller('users')
 export class UserController {

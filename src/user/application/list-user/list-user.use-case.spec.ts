@@ -1,9 +1,10 @@
-import { Observable } from 'rxjs';
 import { Test, TestingModule } from '@nestjs/testing';
+import { Observable } from 'rxjs';
 
-import { User } from '@/app/user/domain/interface/user.interface';
-import { UserRepository } from '@/app/user/domain/abstract/user.repository';
-import { ListUserUseCase } from '@/app/user/application/list-user/list-user.use-case';
+import { UserRepository } from '@app/user/domain/abstract/user.repository';
+import { User } from '@app/user/domain/interface/user.interface';
+
+import { ListUserUseCase } from '@app/user/application/list-user/list-user.use-case';
 
 describe('ListUserUseCase', () => {
   let useCase: ListUserUseCase;

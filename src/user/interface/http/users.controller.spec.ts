@@ -1,7 +1,10 @@
-import { ListUserUseCase } from '@/app/user/application/list-user/list-user.use-case';
-import { UserRepository } from '@/app/user/domain/abstract/user.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserController } from '@/app/user/interface/http/users.controller';
+
+import { UserRepository } from '@app/user/domain/abstract/user.repository';
+
+import { ListUserUseCase } from '@app/user/application/list-user/list-user.use-case';
+
+import { UserController } from '@app/user/interface/http/users.controller';
 
 describe('UserController', () => {
   let controller: UserController;

@@ -1,11 +1,11 @@
-import { map, Observable, of } from 'rxjs';
 import { Injectable } from '@nestjs/common';
+import { map, Observable, of } from 'rxjs';
 
-import { User } from '@/app/user/domain/interface/user.interface';
-import { UserRepository } from '@/app/user/domain/abstract/user.repository';
+import { UserRepository } from '@app/user/domain/abstract/user.repository';
+import { User } from '@app/user/domain/interface/user.interface';
 
-import * as USERS from '@/app/user/infra/database/db.json';
-import { UserEntityMemory } from '@/app/user/infra/repository/memory/user/entity/user.entity';
+import * as USERS from '@app/user/infra/database/db.json';
+import { UserEntityMemory } from '@app/user/infra/repository/memory/user/entity/user.entity';
 
 @Injectable()
 export class UserRepositoryMemory implements UserRepository {
