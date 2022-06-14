@@ -44,7 +44,7 @@ describe('ListUserUseCase', () => {
       };
     });
 
-    test('Then get list users with success', (done) => {
+    test('Then find user with success', (done) => {
       jest.spyOn(repository, 'getUserById').mockReturnValue(
         new Observable<User>((subscribe) => {
           subscribe.next(user);
