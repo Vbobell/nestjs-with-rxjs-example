@@ -11,16 +11,16 @@ import { UserEntityMemory } from '@app/user/infra/repository/memory/user/entity/
 export class UserRepositoryMemory implements UserRepository {
   getUsers(): Observable<User[]> {
     return of(USERS).pipe(
-      map((userEntitiesMemoryObservable: UserEntityMemory[]) =>
-        this.mapEntitiesObservableToDomain(userEntitiesMemoryObservable),
+      map((userEntities: UserEntityMemory[]) =>
+        this.mapEntitiesToDomain(userEntities),
       ),
     );
   }
 
   getUserById(userId: number): Observable<User> {
     return of(USERS).pipe(
-      map((userEntitiesMemoryObservable: UserEntityMemory[]) => {
-        const userEntity = this.findUser(userEntitiesMemoryObservable, userId);
+      map((userEntities: UserEntityMemory[]) => {
+        const userEntity = this.findUser(userEntities, userId);
 
         if (userEntity) {
           return this.mapEntityToDomain(userEntity);
@@ -31,21 +31,11 @@ export class UserRepositoryMemory implements UserRepository {
     );
   }
 
-  private mapEntitiesObservableToDomain(
-    userEntitiesMemoryObservable: UserEntityMemory[],
-  ): User[] {
-    return userEntitiesMemoryObservable.map((userEntity) =>
-      this.mapEntityToDomain(userEntity),
-    );
-  }
-
   private findUser(
-    userEntitiesMemory: UserEntityMemory[],
+    userEntities: UserEntityMemory[],
     userId: number,
   ): UserEntityMemory {
-    const user = userEntitiesMemory.find(
-      (userEntity) => userEntity.id === userId,
-    );
+    const user = userEntities.find((userEntity) => userEntity.id === userId);
 
     if (user) {
       return user;
@@ -60,5 +50,9 @@ export class UserRepositoryMemory implements UserRepository {
     };
 
     return user;
+  }
+
+  private mapEntitiesToDomain(userEntities: UserEntityMemory[]): User[] {
+    return userEntities.map((userEntity) => this.mapEntityToDomain(userEntity));
   }
 }
