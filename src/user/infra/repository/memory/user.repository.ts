@@ -8,7 +8,7 @@ import * as USERS from '@app/user/infra/database/db.json';
 import { UserEntityMemory } from '@app/user/infra/repository/memory/entity/user.entity';
 
 @Injectable()
-export class UserRepositoryMemory implements UserRepository {
+export class UserRepositoryMemory implements UserRepository<UserEntityMemory> {
   getUsers(): Observable<User[]> {
     return of(USERS).pipe(
       map((userEntities: UserEntityMemory[]) =>
@@ -31,6 +31,19 @@ export class UserRepositoryMemory implements UserRepository {
     );
   }
 
+  mapEntityToDomain(userEntity: UserEntityMemory) {
+    const user: User = {
+      id: userEntity.id,
+      name: userEntity.name,
+    };
+
+    return user;
+  }
+
+  mapEntitiesToDomain(userEntities: UserEntityMemory[]): User[] {
+    return userEntities.map((userEntity) => this.mapEntityToDomain(userEntity));
+  }
+
   private findUser(
     userEntities: UserEntityMemory[],
     userId: number,
@@ -42,18 +55,5 @@ export class UserRepositoryMemory implements UserRepository {
     }
 
     return undefined;
-  }
-
-  private mapEntityToDomain(userEntity: UserEntityMemory) {
-    const user: User = {
-      id: userEntity.id,
-      name: userEntity.name,
-    };
-
-    return user;
-  }
-
-  private mapEntitiesToDomain(userEntities: UserEntityMemory[]): User[] {
-    return userEntities.map((userEntity) => this.mapEntityToDomain(userEntity));
   }
 }
