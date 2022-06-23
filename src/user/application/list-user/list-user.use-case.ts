@@ -8,7 +8,7 @@ import { UseCase } from '@app/common/application/abstract.use-case';
 
 @Injectable()
 export class ListUserUseCase implements UseCase<undefined, Observable<User[]>> {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly userRepository: UserRepository<unknown>) {}
 
   execute(): Observable<User[]> {
     return this.userRepository.getUsers();

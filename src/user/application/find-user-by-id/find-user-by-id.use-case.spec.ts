@@ -8,7 +8,7 @@ import { FindUserByIdUseCase } from '@app/user/application/find-user-by-id/find-
 
 describe('ListUserUseCase', () => {
   let useCase: FindUserByIdUseCase;
-  let repository: UserRepository;
+  let repository: UserRepository<User>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -27,7 +27,7 @@ describe('ListUserUseCase', () => {
     }).compile();
 
     useCase = module.get<FindUserByIdUseCase>(FindUserByIdUseCase);
-    repository = module.get<UserRepository>(UserRepository);
+    repository = module.get<UserRepository<User>>(UserRepository);
   });
 
   it('should be defined', () => {
