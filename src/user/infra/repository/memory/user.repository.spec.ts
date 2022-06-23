@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { UserRepositoryMemory } from '@app/user/infra/repository/memory/user/user.repository';
+import { UserRepositoryMemory } from '@app/user/infra/repository/memory/user.repository';
 
 describe('UserRepositoryMemory', () => {
   let useCase: UserRepositoryMemory;
@@ -26,9 +26,11 @@ describe('UserRepositoryMemory', () => {
       useCase.getUsers().subscribe((result) => {
         expect(result).toEqual([
           {
+            id: 1,
             name: 'Joana',
           },
           {
+            id: 2,
             name: 'Jhon',
           },
         ]);

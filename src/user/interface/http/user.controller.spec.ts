@@ -58,9 +58,11 @@ describe('UserController', () => {
     beforeEach(() => {
       users = [
         {
+          id: 1,
           name: 'Joana',
         },
         {
+          id: 2,
           name: 'Jhon',
         },
       ];
@@ -100,6 +102,7 @@ describe('UserController', () => {
 
     beforeEach(() => {
       user = {
+        id: 1,
         name: 'Joana',
       };
     });

@@ -5,7 +5,7 @@ import { UserRepository } from '@app/user/domain/abstract/user.repository';
 import { User } from '@app/user/domain/interface/user.interface';
 
 import * as USERS from '@app/user/infra/database/db.json';
-import { UserEntityMemory } from '@app/user/infra/repository/memory/user/entity/user.entity';
+import { UserEntityMemory } from '@app/user/infra/repository/memory/entity/user.entity';
 
 @Injectable()
 export class UserRepositoryMemory implements UserRepository {
@@ -46,6 +46,7 @@ export class UserRepositoryMemory implements UserRepository {
 
   private mapEntityToDomain(userEntity: UserEntityMemory) {
     const user: User = {
+      id: userEntity.id,
       name: userEntity.name,
     };
 

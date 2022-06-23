@@ -40,6 +40,7 @@ describe('ListUserUseCase', () => {
 
     beforeEach(() => {
       user = {
+        id: 1,
         name: 'Joana',
       };
     });
