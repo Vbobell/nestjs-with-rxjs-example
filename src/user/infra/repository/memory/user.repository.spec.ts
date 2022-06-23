@@ -3,14 +3,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserRepositoryMemory } from '@app/user/infra/repository/memory/user.repository';
 
 describe('UserRepositoryMemory', () => {
-  let useCase: UserRepositoryMemory;
+  let repository: UserRepositoryMemory;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [UserRepositoryMemory],
     }).compile();
 
-    useCase = module.get<UserRepositoryMemory>(UserRepositoryMemory);
+    repository = module.get<UserRepositoryMemory>(UserRepositoryMemory);
   });
 
   afterEach(() => {
@@ -18,12 +18,12 @@ describe('UserRepositoryMemory', () => {
   });
 
   it('should be defined', () => {
-    expect(useCase).toBeDefined();
+    expect(repository).toBeDefined();
   });
 
   describe('When list all users', () => {
     test('Then get list with success', (done) => {
-      useCase.getUsers().subscribe((result) => {
+      repository.getUsers().subscribe((result) => {
         expect(result).toEqual([
           {
             id: 1,
