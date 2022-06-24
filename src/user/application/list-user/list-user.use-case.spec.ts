@@ -8,7 +8,7 @@ import { ListUserUseCase } from '@app/user/application/list-user/list-user.use-c
 
 describe('ListUserUseCase', () => {
   let useCase: ListUserUseCase;
-  let repository: UserRepository<User>;
+  let repository: UserRepository<unknown>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -26,7 +26,7 @@ describe('ListUserUseCase', () => {
     }).compile();
 
     useCase = module.get<ListUserUseCase>(ListUserUseCase);
-    repository = module.get<UserRepository<User>>(UserRepository);
+    repository = module.get<UserRepository<unknown>>(UserRepository);
   });
 
   it('should be defined', () => {
