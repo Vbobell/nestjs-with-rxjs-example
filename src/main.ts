@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as express from 'express';
 
 import { AppModule } from '@app/app.module';
 
@@ -12,6 +13,8 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('rxjs')
     .build();
+
+  app.use(express.json());
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

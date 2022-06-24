@@ -1,8 +1,8 @@
-import { Controller, Get, HttpCode, Param } from '@nestjs/common';
-import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
+import { Controller, Get, HttpCode, Param, ParseIntPipe } from '@nestjs/common';
+import { ApiTags, ApiOkResponse, ApiParam } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 
-import { UserDTO } from '@app/user/domain/dto/user.dto';
+import { UserResponseDTO } from '@app/user/domain/dto/user.response.dto';
 
 import { FindUserByIdUseCase } from '@app/user/application/find-user-by-id/find-user-by-id.use-case';
 import { ListUserUseCase } from '@app/user/application/list-user/list-user.use-case';
@@ -16,17 +16,20 @@ export class UserController {
 
   @Get('/list')
   @ApiTags('user')
-  @ApiOkResponse({ description: 'users list', type: [UserDTO] })
+  @ApiOkResponse({ description: 'users list', type: [UserResponseDTO] })
   @HttpCode(200)
-  listUsers(): Observable<UserDTO[]> {
+  listUsers(): Observable<UserResponseDTO[]> {
     return this.listUserUseCase.execute();
   }
 
-  @Get('/find/:userId')
+  @Get('/find/:id')
   @ApiTags('users')
-  @ApiOkResponse({ description: 'find user by id', type: UserDTO })
+  @ApiParam({ name: 'id' })
+  @ApiOkResponse({ description: 'find user by id', type: UserResponseDTO })
   @HttpCode(200)
-  findUserById(@Param('userId') userId: number): Observable<UserDTO> {
+  findUserById(
+    @Param('id', ParseIntPipe) userId: number,
+  ): Observable<UserResponseDTO> {
     return this.findUserByIdUseCase.execute(userId);
   }
 }
