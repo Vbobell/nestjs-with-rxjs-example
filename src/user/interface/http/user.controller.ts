@@ -2,7 +2,7 @@ import { Controller, Get, HttpCode, Param, ParseIntPipe } from '@nestjs/common';
 import { ApiTags, ApiOkResponse, ApiParam } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 
-import { UserResponseDTO } from '@app/user/domain/dto/user.response.dto';
+import { UserResponseDTO } from '@app/user/domain/dto/user-response.dto';
 
 import { FindUserByIdUseCase } from '@app/user/application/find-user-by-id/find-user-by-id.use-case';
 import { ListUserUseCase } from '@app/user/application/list-user/list-user.use-case';
