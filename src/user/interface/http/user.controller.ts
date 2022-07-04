@@ -23,7 +23,7 @@ export class UserController {
   }
 
   @Get('/find/:id')
-  @ApiTags('users')
+  @ApiTags('user')
   @ApiParam({ name: 'id' })
   @ApiOkResponse({ description: 'find user by id', type: UserResponseDTO })
   @HttpCode(200)

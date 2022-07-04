@@ -6,6 +6,8 @@ import { TaskRepositoryMemory } from '@app/task/infra/repository/memory/task.rep
 
 import { ListTaskUseCase } from '@app/task/application/list-task/list-task.use-case';
 
+import { TaskController } from '@app/task/interface/http/task.controller';
+
 @Module({
   providers: [
     {
@@ -14,5 +16,7 @@ import { ListTaskUseCase } from '@app/task/application/list-task/list-task.use-c
     },
     ListTaskUseCase,
   ],
+  controllers: [TaskController],
+  exports: [ListTaskUseCase],
 })
 export class TaskModule {}
