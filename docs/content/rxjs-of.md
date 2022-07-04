@@ -35,7 +35,7 @@ export { executeObjectToObservable };
 
 Para visualizar a implementação desse fluxo acessar:
 
-[codesandbox](https://codesandbox.io/s/rxjs-examples-4hrzln?file=/src/examples/map/rxjs-map.ts)
+[codesandbox](https://codesandbox.io/s/rxjs-examples-4hrzln?file=/src/examples/of/rxjs-of.ts)
 
 ### Exemplo com nest-js
 
