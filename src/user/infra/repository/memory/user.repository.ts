@@ -4,7 +4,7 @@ import { map, Observable, of } from 'rxjs';
 import { UserRepository } from '@app/user/domain/abstract/user.repository';
 import { User } from '@app/user/domain/interface/user.interface';
 
-import * as USERS from '@app/user/infra/database/db.json';
+import * as USERS from '@app/common/infra/database/user.db.json';
 import { UserEntityMemory } from '@app/user/infra/repository/memory/entity/user.entity';
 
 @Injectable()

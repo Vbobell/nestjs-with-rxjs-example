@@ -4,7 +4,7 @@ import { map, Observable, of } from 'rxjs';
 import { TaskRepository } from '@app/task/domain/abstract/task.repository';
 import { Task } from '@app/task/domain/interface/task.interface';
 
-import * as TASKS from '@app/task/infra/database/db.json';
+import * as TASKS from '@app/common/infra/database/task.db.json';
 import { TaskEntityMemory } from '@app/task/infra/repository/memory/entity/task.entity';
 
 @Injectable()
