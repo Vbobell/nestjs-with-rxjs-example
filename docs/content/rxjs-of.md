@@ -1,7 +1,6 @@
 ## of()
 
-Essa função do `rxjs` transforma um objeto natural javascript em um `Observable`,
-onde permite também mais de um parametro de execução.
+Essa função do `rxjs` transforma uma propriedade, objeto, classe no tipo `Observable`.
 
 ### Exemplo
 
@@ -36,7 +35,7 @@ export { executeObjectToObservable };
 
 Para visualizar a implementação desse fluxo acessar:
 
-[codesandbox](https://codesandbox.io/s/rxjs-examples-4hrzln?file=/src/examples/map/rxjs-map.ts)
+[codesandbox](https://codesandbox.io/s/rxjs-examples-4hrzln?file=/src/examples/of/rxjs-of.ts)
 
 ### Exemplo com nest-js
 

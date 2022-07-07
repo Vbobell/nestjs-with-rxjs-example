@@ -1,6 +1,7 @@
 ## map()
 
-Esse operador do `rxjs` manipula a stream de dados do `Observable` e retorna um novo dado a cada emissão dos dados.
+Esse operador do `rxjs` manipula a stream de dados do `Observable`, e a cada chamada do metódo `next`,
+acessa o valor do retorno, podendo o manipular e expor essa alteração para o `subscribe`.
 
 ### Exemplo
 
