@@ -39,4 +39,20 @@ describe('UserRepositoryMemory', () => {
       });
     });
   });
+
+  describe('When check exist user', () => {
+    test('Then user exist', (done) => {
+      repository.checkExistUserById(1).subscribe((result) => {
+        expect(result).toEqual(true);
+        done();
+      });
+    });
+
+    test("Then user d'ont exist", (done) => {
+      repository.checkExistUserById(3).subscribe((result) => {
+        expect(result).toEqual(false);
+        done();
+      });
+    });
+  });
 });

@@ -8,4 +8,5 @@ import { User } from '@app/user/domain/interface/user.interface';
 export abstract class UserRepository<T> extends Repository<T, User> {
   abstract getUsers(): Observable<User[]>;
   abstract getUserById(userId: number): Observable<User>;
+  abstract checkExistUserById(userId: number): Observable<boolean>;
 }

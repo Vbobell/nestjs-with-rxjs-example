@@ -31,6 +31,20 @@ export class UserRepositoryMemory implements UserRepository<UserEntityMemory> {
     );
   }
 
+  checkExistUserById(userId: number): Observable<boolean> {
+    return of(USERS).pipe(
+      map((userEntities: UserEntityMemory[]) => {
+        const userEntity = this.findUser(userEntities, userId);
+
+        if (userEntity) {
+          return true;
+        }
+
+        return false;
+      }),
+    );
+  }
+
   mapEntityToDomain(userEntity: UserEntityMemory) {
     const user: User = {
       id: userEntity.id,
