@@ -2,30 +2,29 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Observable } from 'rxjs';
 
 import { UserRepository } from '@app/user/domain/abstract/user.repository';
-import { User } from '@app/user/domain/interface/user.interface';
 
-import { FindUserByIdUseCase } from '@app/user/application/find-user-by-id/find-user-by-id.use-case';
+import { CheckExistUserUseCase } from '@app/user/application/check-exist-user/check-exist-user.use-case';
 
-describe('ListUserUseCase', () => {
-  let useCase: FindUserByIdUseCase;
+describe('CheckExistUserUseCase', () => {
+  let useCase: CheckExistUserUseCase;
   let repository: UserRepository<unknown>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        FindUserByIdUseCase,
+        CheckExistUserUseCase,
         {
           provide: UserRepository,
           useFactory: jest.fn().mockImplementation(() => {
             return {
-              getUserById: jest.fn(),
+              checkExistUserById: jest.fn(),
             };
           }),
         },
       ],
     }).compile();
 
-    useCase = module.get<FindUserByIdUseCase>(FindUserByIdUseCase);
+    useCase = module.get<CheckExistUserUseCase>(CheckExistUserUseCase);
     repository = module.get<UserRepository<unknown>>(UserRepository);
   });
 
@@ -34,40 +33,31 @@ describe('ListUserUseCase', () => {
     expect(repository).toBeDefined();
   });
 
-  describe('When get user', () => {
-    let user: User;
-
-    beforeEach(() => {
-      user = {
-        id: 1,
-        name: 'Joana',
-      };
-    });
-
-    test('Then find user with success', (done) => {
-      jest.spyOn(repository, 'getUserById').mockReturnValue(
-        new Observable<User>((subscribe) => {
-          subscribe.next(user);
+  describe('When check exist user', () => {
+    test('Then user exist', (done) => {
+      jest.spyOn(repository, 'checkExistUserById').mockReturnValue(
+        new Observable<boolean>((subscribe) => {
+          subscribe.next(true);
           subscribe.complete();
         }),
       );
 
       useCase.execute(1).subscribe((result) => {
-        expect(result).toEqual(user);
+        expect(result).toEqual(true);
         done();
       });
     });
 
-    test('Then user not found', (done) => {
-      jest.spyOn(repository, 'getUserById').mockReturnValue(
-        new Observable<User>((subscribe) => {
-          subscribe.next(undefined);
+    test("Then user d'ont exist", (done) => {
+      jest.spyOn(repository, 'checkExistUserById').mockReturnValue(
+        new Observable<boolean>((subscribe) => {
+          subscribe.next(false);
           subscribe.complete();
         }),
       );
 
       useCase.execute(2).subscribe((result) => {
-        expect(result).toEqual(undefined);
+        expect(result).toEqual(false);
         done();
       });
     });
