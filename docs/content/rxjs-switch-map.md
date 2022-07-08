@@ -6,7 +6,7 @@ acessa o valor do retorno, mas diferente do `map`, ele muda o contexto da `pipe`
 ### Exemplo
 
 O Exemplo abaixo manipula o `Observable` do tipo `UserEntity` mapeando os dados para o tipo `User`,
-e logo após executando uma busca nas tarefas relacionadas ao relacionada ao usuário.
+e logo após executando uma busca nas tarefas relacionadas ao usuário.
 
 ```typescript
 import { map, Observable, switchMap } from 'rxjs';
