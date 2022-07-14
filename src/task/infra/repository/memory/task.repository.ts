@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { map, Observable, of } from 'rxjs';
+import { Injectable, Logger } from '@nestjs/common';
+import { map, Observable, of, tap } from 'rxjs';
 
 import { TaskRepository } from '@app/task/domain/abstract/task.repository';
 import { Task } from '@app/task/domain/interface/task.interface';
@@ -9,11 +9,20 @@ import { TaskEntityMemory } from '@app/task/infra/repository/memory/entity/task.
 
 @Injectable()
 export class TaskRepositoryMemory implements TaskRepository<TaskEntityMemory> {
+  private readonly logger = new Logger(TaskRepositoryMemory.name);
+
   getTasks(): Observable<Task[]> {
+    this.logger.log('getTasks | execution started');
+
     return of(TASKS).pipe(
       map((taskEntities: TaskEntityMemory[]) =>
         this.mapEntitiesToDomain(taskEntities),
       ),
+      tap((tasks: Task[]) => {
+        this.logger.log(
+          `getTasks | finished execution | number of tasks: ${tasks.length}`,
+        );
+      }),
     );
   }
 
