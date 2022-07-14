@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Injectable, Logger } from '@nestjs/common';
+import { Observable, tap } from 'rxjs';
 
 import { UserRepository } from '@app/user/domain/abstract/user.repository';
 
@@ -9,9 +9,19 @@ import { UseCase } from '@app/common/application/abstract.use-case';
 export class CheckExistUserUseCase
   implements UseCase<number, Observable<boolean>>
 {
+  private readonly logger = new Logger(CheckExistUserUseCase.name);
+
   constructor(private readonly userRepository: UserRepository<unknown>) {}
 
   execute(userId: number): Observable<boolean> {
-    return this.userRepository.checkExistUserById(userId);
+    this.logger.log(`execute | execution started | userId: ${userId}`);
+
+    return this.userRepository.checkExistUserById(userId).pipe(
+      tap((existUser: boolean) => {
+        this.logger.log(
+          `execute | finished execution | userId: ${userId} | existUser: ${existUser}`,
+        );
+      }),
+    );
   }
 }
