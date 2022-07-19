@@ -8,6 +8,7 @@ Esse projeto tem o intuito de exemplificar como manipular o padrão `Observable`
 - [Observable](https://vbobell.github.io/nestjs-observable-example/content/rxjs-observable)
 - [map](https://vbobell.github.io/nestjs-observable-example/content/rxjs-map)
 - [of](https://vbobell.github.io/nestjs-observable-example/content/rxjs-of)
+- [tap](https://vbobell.github.io/nestjs-observable-example/content/rxjs-tap)
 
 ## Execução
 

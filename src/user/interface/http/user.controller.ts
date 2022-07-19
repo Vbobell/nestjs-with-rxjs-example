@@ -1,6 +1,13 @@
-import { Controller, Get, HttpCode, Param, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpCode,
+  Logger,
+  Param,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { ApiTags, ApiOkResponse, ApiParam } from '@nestjs/swagger';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 import { UserResponseDTO } from '@app/user/domain/dto/user-response.dto';
 
@@ -9,6 +16,8 @@ import { ListUserUseCase } from '@app/user/application/list-user/list-user.use-c
 
 @Controller('user')
 export class UserController {
+  private readonly logger = new Logger(UserController.name);
+
   constructor(
     private readonly listUserUseCase: ListUserUseCase,
     private readonly findUserByIdUseCase: FindUserByIdUseCase,
@@ -19,7 +28,15 @@ export class UserController {
   @ApiOkResponse({ description: 'users list', type: [UserResponseDTO] })
   @HttpCode(200)
   listUsers(): Observable<UserResponseDTO[]> {
-    return this.listUserUseCase.execute();
+    this.logger.log('listUsers | execution started');
+
+    return this.listUserUseCase.execute().pipe(
+      tap((users: UserResponseDTO[]) => {
+        this.logger.log(
+          `listUsers | finished execution | number of users: ${users.length}`,
+        );
+      }),
+    );
   }
 
   @Get('/find/:id')
@@ -30,6 +47,14 @@ export class UserController {
   findUserById(
     @Param('id', ParseIntPipe) userId: number,
   ): Observable<UserResponseDTO> {
-    return this.findUserByIdUseCase.execute(userId);
+    this.logger.log(`findUserById | execution started | userId: ${userId}`);
+
+    return this.findUserByIdUseCase.execute(userId).pipe(
+      tap((user: UserResponseDTO) => {
+        this.logger.log(
+          `findUserById | finished execution | userId: ${userId} | user: ${user}`,
+        );
+      }),
+    );
   }
 }

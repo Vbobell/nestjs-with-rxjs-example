@@ -1,6 +1,13 @@
-import { Controller, Get, HttpCode, Param, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpCode,
+  Logger,
+  Param,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, of, switchMap, tap } from 'rxjs';
 
 import { UserTasksResponseDTO } from '@app/user-task/domain/dto/user-task.dto';
 
@@ -9,6 +16,8 @@ import { CheckExistUserUseCase } from '@app/user/application/check-exist-user/ch
 
 @Controller('user-task')
 export class UserTaskController {
+  private readonly logger = new Logger(UserTaskController.name);
+
   constructor(
     private readonly checkExistUserUseCase: CheckExistUserUseCase,
     private readonly findUserTasksUseCase: FindUserTasksUseCase,
@@ -25,13 +34,27 @@ export class UserTaskController {
   findUserTasksById(
     @Param('id', ParseIntPipe) userId: number,
   ): Observable<UserTasksResponseDTO> {
+    this.logger.log(
+      `findUserTasksById | execution started | userId: ${userId}`,
+    );
+
     return this.checkExistUserUseCase.execute(userId).pipe(
+      tap((existUser) => {
+        this.logger.log(
+          `findUserTasksById | check exist user finished | userId: ${userId} | existUser: ${existUser}`,
+        );
+      }),
       switchMap((existUser) => {
         if (existUser) {
           return this.findUserTasksUseCase.execute(userId);
         }
 
         return of(undefined);
+      }),
+      tap(() => {
+        this.logger.log(
+          `findUserTasksById | finished execution | userId: ${userId}`,
+        );
       }),
     );
   }
