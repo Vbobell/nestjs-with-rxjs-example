@@ -62,9 +62,9 @@ Para visualizar a implementação desse fluxo acessar:
 
 No projeto está implementado em todas as camadas `Repository`, `Application` e `Interface`.
 
-[git](https://vbobell.github.io/nestjs-observable-example/src/user/infra/repository/memory/user/user.repository.ts)
-[git](https://vbobell.github.io/nestjs-observable-example/src/user/application/find-user-by-id/find-user-by-id.use-case.ts)
-[git](https://vbobell.github.io/nestjs-observable-example/src/user/interface/http/user.controller.ts)
+[git](https://vbobell.github.io/nestjs-with-rxjs-example/src/user/infra/repository/memory/user/user.repository.ts)
+[git](https://vbobell.github.io/nestjs-with-rxjs-example/src/user/application/find-user-by-id/find-user-by-id.use-case.ts)
+[git](https://vbobell.github.io/nestjs-with-rxjs-example/src/user/interface/http/user.controller.ts)
 
 ### Docs
 

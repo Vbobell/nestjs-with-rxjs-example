@@ -39,7 +39,7 @@ Para visualizar a implementação desse fluxo acessar:
 
 ### Exemplo com nest-js
 
-[git](https://vbobell.github.io/nestjs-observable-example/src/user/infra/repository/memory/user/user.repository.ts)
+[git](https://vbobell.github.io/nestjs-with-rxjs-example/src/user/infra/repository/memory/user/user.repository.ts)
 
 ### Docs
 
