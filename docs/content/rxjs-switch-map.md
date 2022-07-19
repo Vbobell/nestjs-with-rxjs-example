@@ -119,6 +119,10 @@ Para visualizar a implementação desse fluxo acessar:
 
 [codesandbox](https://codesandbox.io/s/rxjs-examples-4hrzln?file=/src/examples/switch-map/rxjs-switch-map.ts)
 
+### Exemplo com nest-js
+
+[git](https://vbobell.github.io/nestjs-with-rxjs-example/src/user-task/interface/http/user-task.controller.ts)
+
 ### Docs
 
 [rxjs](https://rxjs.dev/api/operators/switchMap)
