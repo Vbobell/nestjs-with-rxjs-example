@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { map, Observable, of } from 'rxjs';
+import { Injectable, Logger } from '@nestjs/common';
+import { map, Observable, of, tap } from 'rxjs';
 
 import { UserTaskRepository } from '@app/user-task/domain/abstract/user-task.repository';
 import { UserTask } from '@app/user-task/domain/interface/user-task.interface';
@@ -12,14 +12,28 @@ import { UserTaskEntityMemory } from '@app/user-task/infra/repository/memory/ent
 export class UserTaskRepositoryMemory
   implements UserTaskRepository<UserTaskEntityMemory>
 {
+  private readonly logger = new Logger(UserTaskRepositoryMemory.name);
+
   getUserTasks(userId: number): Observable<UserTask> {
+    this.logger.log(`getUserTasks | execution started | userId: ${userId}`);
+
     return of(TASKS).pipe(
-      map((taskEntities: TaskEntityMemory[]) =>
-        this.filterUserTasks(userId, taskEntities),
-      ),
-      map((tasks: TaskEntityMemory[]) =>
-        this.mapEntityToDomain({ user: { id: userId }, tasks }),
-      ),
+      map((taskEntities: TaskEntityMemory[]) => {
+        return this.filterUserTasks(userId, taskEntities);
+      }),
+      tap((taskEntityMemory: TaskEntityMemory[]) => {
+        this.logger.log(
+          `getUserTasks | filter user tasks finished | userId: ${userId} | number of tasks: ${taskEntityMemory.length}`,
+        );
+      }),
+      map((tasks: TaskEntityMemory[]) => {
+        return this.mapEntityToDomain({ user: { id: userId }, tasks });
+      }),
+      tap(() => {
+        this.logger.log(
+          `getUserTasks | finished execution | userId: ${userId}`,
+        );
+      }),
     );
   }
 

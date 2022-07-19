@@ -60,7 +60,11 @@ Para visualizar a implementação desse fluxo acessar:
 
 ### Exemplo com nest-js
 
+No projeto está implementado em todas as camadas `Repository`, `Application` e `Interface`.
+
 [git](https://vbobell.github.io/nestjs-observable-example/src/user/infra/repository/memory/user/user.repository.ts)
+[git](https://vbobell.github.io/nestjs-observable-example/src/user/application/find-user-by-id/find-user-by-id.use-case.ts)
+[git](https://vbobell.github.io/nestjs-observable-example/src/user/interface/http/user.controller.ts)
 
 ### Docs
 
