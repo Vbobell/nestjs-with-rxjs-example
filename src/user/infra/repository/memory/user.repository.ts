@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { map, Observable, of, tap } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 
 import { UserRepository } from '@app/user/domain/abstract/user.repository';
 import { User } from '@app/user/domain/interface/user.interface';
@@ -23,6 +23,10 @@ export class UserRepositoryMemory implements UserRepository<UserEntityMemory> {
           `getUsers | finished execution | number of users: ${users.length}`,
         );
       }),
+      catchError((error: unknown) => {
+        this.logger.error('getUsers | execution with error', error);
+        throw error;
+      }),
     );
   }
 
@@ -33,16 +37,20 @@ export class UserRepositoryMemory implements UserRepository<UserEntityMemory> {
       map((userEntities: UserEntityMemory[]) => {
         const userEntity = this.findUser(userEntities, userId);
 
-        if (userEntity) {
-          return this.mapEntityToDomain(userEntity);
+        if (!userEntity) {
+          throw new Error('User not found');
         }
 
-        return undefined;
+        return this.mapEntityToDomain(userEntity);
       }),
       tap((user: User) => {
         this.logger.log(
           `getUserById | finished execution | userId: ${userId} | user: ${user}`,
         );
+      }),
+      catchError((error: unknown) => {
+        this.logger.error('getUserById | execution with error', error);
+        throw error;
       }),
     );
   }
@@ -66,6 +74,10 @@ export class UserRepositoryMemory implements UserRepository<UserEntityMemory> {
         this.logger.log(
           `checkExistUserById | finished execution | userId: ${userId} | existUser: ${existUser}`,
         );
+      }),
+      catchError((error: unknown) => {
+        this.logger.error('checkExistUserById | execution with error', error);
+        throw error;
       }),
     );
   }

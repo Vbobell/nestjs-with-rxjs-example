@@ -7,7 +7,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { ApiTags, ApiOkResponse, ApiParam } from '@nestjs/swagger';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap } from 'rxjs';
 
 import { UserResponseDTO } from '@app/user/domain/dto/user-response.dto';
 
@@ -36,6 +36,10 @@ export class UserController {
           `listUsers | finished execution | number of users: ${users.length}`,
         );
       }),
+      catchError((error: unknown) => {
+        this.logger.error('listUsers | execution with error', error);
+        throw error;
+      }),
     );
   }
 
@@ -54,6 +58,13 @@ export class UserController {
         this.logger.log(
           `findUserById | finished execution | userId: ${userId} | user: ${user}`,
         );
+      }),
+      catchError((error: unknown) => {
+        this.logger.error(
+          `findUserById | execution with error | userId: ${userId}`,
+          error,
+        );
+        throw error;
       }),
     );
   }
