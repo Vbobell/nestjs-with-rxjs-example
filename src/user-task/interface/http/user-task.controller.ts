@@ -7,7 +7,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Observable, of, switchMap, tap } from 'rxjs';
+import { catchError, Observable, of, switchMap, tap } from 'rxjs';
 
 import { UserTasksResponseDTO } from '@app/user-task/domain/dto/user-task.dto';
 
@@ -55,6 +55,13 @@ export class UserTaskController {
         this.logger.log(
           `findUserTasksById | finished execution | userId: ${userId}`,
         );
+      }),
+      catchError((error: unknown) => {
+        this.logger.error(
+          `findUserTasksById | execution with error | userId: ${userId}`,
+          error,
+        );
+        throw error;
       }),
     );
   }
