@@ -18,7 +18,9 @@ export class FindUserByIdUseCase implements UseCase<number, Observable<User>> {
     return this.userRepository.getUserById(userId).pipe(
       tap((user: User) => {
         this.logger.log(
-          `getUserById | finished execution | userId: ${userId} | user: ${user}`,
+          `getUserById | finished execution | userId: ${userId} | user: ${JSON.stringify(
+            user,
+          )}`,
         );
       }),
       catchError((error: unknown) => {

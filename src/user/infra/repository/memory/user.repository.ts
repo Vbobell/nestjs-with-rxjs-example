@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 
+import { NotFoundException } from '@app/common/domain/interface/not-found.exception';
 import { UserRepository } from '@app/user/domain/abstract/user.repository';
 import { User } from '@app/user/domain/interface/user.interface';
 
@@ -38,14 +39,16 @@ export class UserRepositoryMemory implements UserRepository<UserEntityMemory> {
         const userEntity = this.findUser(userEntities, userId);
 
         if (!userEntity) {
-          throw new Error('User not found');
+          throw new NotFoundException('User not found');
         }
 
         return this.mapEntityToDomain(userEntity);
       }),
       tap((user: User) => {
         this.logger.log(
-          `getUserById | finished execution | userId: ${userId} | user: ${user}`,
+          `getUserById | finished execution | userId: ${userId} | user: ${JSON.stringify(
+            user,
+          )}`,
         );
       }),
       catchError((error: unknown) => {

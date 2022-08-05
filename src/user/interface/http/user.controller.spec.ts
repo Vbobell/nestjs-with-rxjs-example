@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Observable } from 'rxjs';
 
+import { NotFoundException } from '@app/common/domain/interface/not-found.exception';
 import { UserRepository } from '@app/user/domain/abstract/user.repository';
 import { User } from '@app/user/domain/interface/user.interface';
 
@@ -124,14 +125,16 @@ describe('UserController', () => {
     test('Then user not found', (done) => {
       jest.spyOn(findUserByIdUseCase, 'execute').mockReturnValue(
         new Observable<User>((subscribe) => {
-          subscribe.next(undefined);
+          subscribe.error(new NotFoundException('User not found'));
           subscribe.complete();
         }),
       );
 
-      controller.findUserById(2).subscribe((result) => {
-        expect(result).toEqual(undefined);
-        done();
+      controller.findUserById(2).subscribe({
+        error: (error: NotFoundException) => {
+          expect(error.message).toEqual('User not found');
+          done();
+        },
       });
     });
   });
