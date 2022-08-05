@@ -1,6 +1,6 @@
 import { Controller, Get, HttpCode, Logger } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap } from 'rxjs';
 
 import { TaskResponseDTO } from '@app/task/domain/dto/task-response.dto';
 
@@ -24,6 +24,10 @@ export class TaskController {
         this.logger.log(
           `listTasks | finished execution | number of tasks: ${tasks.length}`,
         );
+      }),
+      catchError((error: unknown) => {
+        this.logger.error('listTasks | execution with error', error);
+        throw error;
       }),
     );
   }

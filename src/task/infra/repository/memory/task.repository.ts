@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { map, Observable, of, tap } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 
 import { TaskRepository } from '@app/task/domain/abstract/task.repository';
 import { Task } from '@app/task/domain/interface/task.interface';
@@ -22,6 +22,10 @@ export class TaskRepositoryMemory implements TaskRepository<TaskEntityMemory> {
         this.logger.log(
           `getTasks | finished execution | number of tasks: ${tasks.length}`,
         );
+      }),
+      catchError((error: unknown) => {
+        this.logger.error('getTasks | execution with error', error);
+        throw error;
       }),
     );
   }
