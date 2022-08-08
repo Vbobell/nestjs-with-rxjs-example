@@ -2,13 +2,7 @@
 
 Esse projeto tem o intuito de exemplificar como manipular o padrão `Observable` do `rxjs`, utilzando a ferramenta `nestjs`.
 
-## Lista de conteúdos
-
-- [Página inicial](https://vbobell.github.io/nestjs-with-rxjs-example)
-- [Observable](https://vbobell.github.io/nestjs-with-rxjs-example/content/rxjs-observable)
-- [map](https://vbobell.github.io/nestjs-with-rxjs-example/content/rxjs-map)
-- [of](https://vbobell.github.io/nestjs-with-rxjs-example/content/rxjs-of)
-- [tap](https://vbobell.github.io/nestjs-with-rxjs-example/content/rxjs-tap)
+- [Documentação dos exemplos](https://vbobell.github.io/nestjs-with-rxjs-example)
 
 ## Execução
 
