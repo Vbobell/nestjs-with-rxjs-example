@@ -121,8 +121,9 @@ Para visualizar a implementação desse fluxo acessar:
 
 ### Exemplo com nest-js
 
-[git](https://vbobell.github.io/nestjs-with-rxjs-example/src/user-task/interface/http/user-task.controller.ts)
+[git - Camada de interface](https://github.com/Vbobell/nestjs-with-rxjs-example/blob/main/src/user-task/interface/http/user-task.controller.ts#L47)
 
 ### Docs
 
 [rxjs](https://rxjs.dev/api/operators/switchMap)
+[learn rxjs](https://www.learnrxjs.io/learn-rxjs/operators/transformation/switchmap)

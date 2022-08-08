@@ -5,3 +5,4 @@
 - [map](https://vbobell.github.io/nestjs-with-rxjs-example/content/rxjs-map)
 - [switchMap](https://vbobell.github.io/nestjs-with-rxjs-example/content/rxjs-switch-map)
 - [tap](https://vbobell.github.io/nestjs-with-rxjs-example/content/rxjs-tap)
+- [catchError](https://vbobell.github.io/nestjs-with-rxjs-example/content/rxjs-catch-error)

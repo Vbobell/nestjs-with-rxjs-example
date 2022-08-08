@@ -84,4 +84,9 @@ Para visualizar a implementação desse fluxo acessar:
 
 ### Exemplo com nest-js
 
+[git - Camada de repositório](https://vbobell.github.io/nestjs-with-rxjs-example/src/user/infra/repository/memory/user/user.repository.ts)
+
 ### Docs
+
+[rxjs](https://rxjs.dev/api/operators/catchError)
+[learn rxjs](https://www.learnrxjs.io/learn-rxjs/operators/error_handling/catch)
