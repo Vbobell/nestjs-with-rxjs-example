@@ -40,6 +40,29 @@ describe('UserRepositoryMemory', () => {
     });
   });
 
+  describe('When get user by id', () => {
+    test('Then get user with success', (done) => {
+      repository.getUserById(1).subscribe((result) => {
+        expect(result).toEqual({
+          id: 1,
+          name: 'Joana',
+        });
+
+        done();
+      });
+    });
+
+    test('Then user not found', (done) => {
+      repository.getUserById(3).subscribe({
+        error: (error) => {
+          expect(error.message).toEqual('User not found');
+
+          done();
+        },
+      });
+    });
+  });
+
   describe('When check exist user', () => {
     test('Then user exist', (done) => {
       repository.checkExistUserById(1).subscribe((result) => {

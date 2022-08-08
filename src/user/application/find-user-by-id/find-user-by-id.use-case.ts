@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap } from 'rxjs';
 
 import { UserRepository } from '@app/user/domain/abstract/user.repository';
 import { User } from '@app/user/domain/interface/user.interface';
@@ -18,8 +18,17 @@ export class FindUserByIdUseCase implements UseCase<number, Observable<User>> {
     return this.userRepository.getUserById(userId).pipe(
       tap((user: User) => {
         this.logger.log(
-          `getUserById | finished execution | userId: ${userId} | user: ${user}`,
+          `getUserById | finished execution | userId: ${userId} | user: ${JSON.stringify(
+            user,
+          )}`,
         );
+      }),
+      catchError((error: unknown) => {
+        this.logger.error(
+          `execute | execution with error | userId: ${userId}`,
+          error,
+        );
+        throw error;
       }),
     );
   }

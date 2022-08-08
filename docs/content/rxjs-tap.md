@@ -62,10 +62,11 @@ Para visualizar a implementação desse fluxo acessar:
 
 No projeto está implementado em todas as camadas `Repository`, `Application` e `Interface`.
 
-[git](https://vbobell.github.io/nestjs-with-rxjs-example/src/user/infra/repository/memory/user/user.repository.ts)
-[git](https://vbobell.github.io/nestjs-with-rxjs-example/src/user/application/find-user-by-id/find-user-by-id.use-case.ts)
-[git](https://vbobell.github.io/nestjs-with-rxjs-example/src/user/interface/http/user.controller.ts)
+[git - Camada de repositório](https://github.com/Vbobell/nestjs-with-rxjs-example/blob/main/src/user/infra/repository/memory/user.repository.ts#L42)
+[git - Camada de aplicação](https://github.com/Vbobell/nestjs-with-rxjs-example/blob/main/src/user/application/find-user-by-id/find-user-by-id.use-case.ts#L19)
+[git - Camada de interface](https://github.com/Vbobell/nestjs-with-rxjs-example/blob/main/src/user/interface/http/user.controller.ts#L53)
 
 ### Docs
 
 [rxjs](https://rxjs.dev/api/operators/tap)
+[learn rxjs](https://www.learnrxjs.io/learn-rxjs/operators/utility/do)

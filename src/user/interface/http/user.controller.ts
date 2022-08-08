@@ -6,9 +6,16 @@ import {
   Param,
   ParseIntPipe,
 } from '@nestjs/common';
-import { ApiTags, ApiOkResponse, ApiParam } from '@nestjs/swagger';
-import { Observable, tap } from 'rxjs';
+import {
+  ApiTags,
+  ApiOkResponse,
+  ApiParam,
+  ApiNotFoundResponse,
+} from '@nestjs/swagger';
+import { catchError, Observable, tap } from 'rxjs';
 
+import { NotFoundResponseExceptionDTO } from '@app/common/domain/dto/not-found-response.exception.dto';
+import { NotFoundException } from '@app/common/domain/interface/not-found.exception';
 import { UserResponseDTO } from '@app/user/domain/dto/user-response.dto';
 
 import { FindUserByIdUseCase } from '@app/user/application/find-user-by-id/find-user-by-id.use-case';
@@ -36,6 +43,10 @@ export class UserController {
           `listUsers | finished execution | number of users: ${users.length}`,
         );
       }),
+      catchError((error: unknown) => {
+        this.logger.error('listUsers | execution with error', error);
+        throw error;
+      }),
     );
   }
 
@@ -43,6 +54,10 @@ export class UserController {
   @ApiTags('user')
   @ApiParam({ name: 'id' })
   @ApiOkResponse({ description: 'find user by id', type: UserResponseDTO })
+  @ApiNotFoundResponse({
+    description: 'user not found by id',
+    type: NotFoundResponseExceptionDTO,
+  })
   @HttpCode(200)
   findUserById(
     @Param('id', ParseIntPipe) userId: number,
@@ -52,8 +67,22 @@ export class UserController {
     return this.findUserByIdUseCase.execute(userId).pipe(
       tap((user: UserResponseDTO) => {
         this.logger.log(
-          `findUserById | finished execution | userId: ${userId} | user: ${user}`,
+          `findUserById | finished execution | userId: ${userId} | user: ${JSON.stringify(
+            user,
+          )}`,
         );
+      }),
+      catchError((error: unknown) => {
+        this.logger.error(
+          `findUserById | execution with error | userId: ${userId}`,
+          error,
+        );
+
+        if (error instanceof NotFoundException) {
+          throw new NotFoundResponseExceptionDTO(error.message);
+        }
+
+        throw error;
       }),
     );
   }

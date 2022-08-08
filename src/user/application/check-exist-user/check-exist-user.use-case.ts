@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap } from 'rxjs';
 
 import { UserRepository } from '@app/user/domain/abstract/user.repository';
 
@@ -21,6 +21,13 @@ export class CheckExistUserUseCase
         this.logger.log(
           `execute | finished execution | userId: ${userId} | existUser: ${existUser}`,
         );
+      }),
+      catchError((error: unknown) => {
+        this.logger.error(
+          `execute | execution with error | userId: ${userId}`,
+          error,
+        );
+        throw error;
       }),
     );
   }

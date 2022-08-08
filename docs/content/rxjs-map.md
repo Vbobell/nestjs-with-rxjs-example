@@ -61,8 +61,9 @@ Para visualizar a implementação desse fluxo acessar:
 
 ### Exemplo com nest-js
 
-[git](https://vbobell.github.io/nestjs-with-rxjs-example/src/user/infra/repository/memory/user/user.repository.ts)
+[git - Camada de repositório](https://github.com/Vbobell/nestjs-with-rxjs-example/blob/main/src/user/infra/repository/memory/user.repository.ts#L18)
 
 ### Docs
 
 [rxjs](https://rxjs.dev/api/operators/map)
+[learn rxjs](https://www.learnrxjs.io/learn-rxjs/operators/transformation/map)

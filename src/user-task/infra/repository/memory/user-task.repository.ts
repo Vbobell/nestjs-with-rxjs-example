@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { map, Observable, of, tap } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 
 import { UserTaskRepository } from '@app/user-task/domain/abstract/user-task.repository';
 import { UserTask } from '@app/user-task/domain/interface/user-task.interface';
@@ -33,6 +33,10 @@ export class UserTaskRepositoryMemory
         this.logger.log(
           `getUserTasks | finished execution | userId: ${userId}`,
         );
+      }),
+      catchError((error: unknown) => {
+        this.logger.error('getUserTasks | execution with error', error);
+        throw error;
       }),
     );
   }

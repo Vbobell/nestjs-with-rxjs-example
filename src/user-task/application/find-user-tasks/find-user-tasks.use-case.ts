@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap } from 'rxjs';
 
 import { UserTaskRepository } from '@app/user-task/domain/abstract/user-task.repository';
 import { UserTask } from '@app/user-task/domain/interface/user-task.interface';
@@ -22,6 +22,13 @@ export class FindUserTasksUseCase
     return this.userTaskRepository.getUserTasks(userId).pipe(
       tap(() => {
         this.logger.log(`execute | finished execution | userId: ${userId}`);
+      }),
+      catchError((error: unknown) => {
+        this.logger.error(
+          `execute | execution with error | userId: ${userId}`,
+          error,
+        );
+        throw error;
       }),
     );
   }
