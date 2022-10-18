@@ -61,7 +61,7 @@ Para visualizar a implementação desse fluxo acessar:
 
 ### Exemplo com nest-js
 
-[git - Camada de repositório](https://github.com/Vbobell/nestjs-with-rxjs-example/blob/main/src/user/infra/repository/memory/user.repository.ts#L18)
+[git - Camada de repositório](https://github.com/Vbobell/nestjs-with-rxjs-example/blob/main/src/user/infra/repository/sqlite/user.repository.ts#L25)
 
 ### Docs
 

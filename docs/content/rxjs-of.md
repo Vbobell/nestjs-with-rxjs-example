@@ -1,6 +1,6 @@
 ## of()
 
-Essa função do `rxjs` transforma uma propriedade, objeto, classe no tipo `Observable`.
+Essa função do `rxjs` transforma uma propriedade ou objeto no tipo `Observable`.
 
 ### Exemplo
 
@@ -38,8 +38,6 @@ Para visualizar a implementação desse fluxo acessar:
 [codesandbox](https://codesandbox.io/s/rxjs-examples-4hrzln?file=/src/examples/of/rxjs-of.ts)
 
 ### Exemplo com nest-js
-
-[git - Camada de repositório](https://github.com/Vbobell/nestjs-with-rxjs-example/blob/main/src/user/infra/repository/memory/user.repository.ts#L17)
 
 ### Docs
 

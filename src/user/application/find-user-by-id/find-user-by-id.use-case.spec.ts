@@ -1,4 +1,4 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 import { Observable } from 'rxjs';
 
 import { NotFoundException } from '@app/common/domain/interface/not-found.exception';
@@ -7,12 +7,14 @@ import { User } from '@app/user/domain/interface/user.interface';
 
 import { FindUserByIdUseCase } from '@app/user/application/find-user-by-id/find-user-by-id.use-case';
 
+import { createTestingModule } from '@test/util/test.module';
+
 describe('ListUserUseCase', () => {
   let useCase: FindUserByIdUseCase;
   let repository: UserRepository<unknown>;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    const module: TestingModule = await createTestingModule({
       providers: [
         FindUserByIdUseCase,
         {

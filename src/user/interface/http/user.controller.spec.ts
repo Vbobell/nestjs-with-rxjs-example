@@ -1,4 +1,4 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 import { Observable } from 'rxjs';
 
 import { NotFoundException } from '@app/common/domain/interface/not-found.exception';
@@ -10,13 +10,15 @@ import { ListUserUseCase } from '@app/user/application/list-user/list-user.use-c
 
 import { UserController } from '@app/user/interface/http/user.controller';
 
+import { createTestingModule } from '@test/util/test.module';
+
 describe('UserController', () => {
   let controller: UserController;
   let listUserUseCase: ListUserUseCase;
   let findUserByIdUseCase: FindUserByIdUseCase;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    const module: TestingModule = await createTestingModule({
       controllers: [UserController],
       providers: [
         {
