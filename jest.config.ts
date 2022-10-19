@@ -12,5 +12,6 @@ export default {
   moduleNameMapper: {
     '^@app/(.*)$': '<rootDir>/src/$1',
     '^@test/(.*)$': '<rootDir>/test/$1',
+    '^@external/(.*)$': '<rootDir>/external/$1',
   },
 };

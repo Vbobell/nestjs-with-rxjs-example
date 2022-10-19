@@ -21,7 +21,8 @@
     "resolveJsonModule": true,
     "paths": {
       "@app/*": ["src/*"],
-      "@test/*": ["test/*"]
+      "@test/*": ["test/*"],
+      "@external/*": ["external/*"]
     }
   }
 }
