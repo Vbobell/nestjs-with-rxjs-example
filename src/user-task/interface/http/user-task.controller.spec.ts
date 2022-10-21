@@ -1,7 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { UserModule } from '@app/user/user.module';
-
 import { UserTaskRepository } from '@app/user-task/domain/abstract/user-task.repository';
 import { UserRepository } from '@app/user/domain/abstract/user.repository';
 
@@ -15,7 +13,6 @@ describe('UserTaskController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [UserModule],
       controllers: [UserTaskController],
       providers: [
         {

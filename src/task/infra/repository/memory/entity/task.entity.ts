@@ -1,7 +1,7 @@
-import { UserEntityMemory } from '@app/user/infra/repository/memory/entity/user.entity';
+import { UserEntitySqlite } from '@app/user/infra/repository/sqlite/entity/user.entity';
 
 export interface TaskEntityMemory {
   title: string;
   description: string;
-  user?: Pick<UserEntityMemory, 'id'>;
+  user?: Pick<UserEntitySqlite, 'id'>;
 }
