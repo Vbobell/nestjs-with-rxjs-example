@@ -1,4 +1,4 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 
 import { UserTaskRepository } from '@app/user-task/domain/abstract/user-task.repository';
 import { UserRepository } from '@app/user/domain/abstract/user.repository';
@@ -8,11 +8,13 @@ import { CheckExistUserUseCase } from '@app/user/application/check-exist-user/ch
 
 import { UserTaskController } from '@app/user-task/interface/http/user-task.controller';
 
+import { createTestingModule } from '@test/util/test.module';
+
 describe('UserTaskController', () => {
   let controller: UserTaskController;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    const module: TestingModule = await createTestingModule({
       controllers: [UserTaskController],
       providers: [
         {

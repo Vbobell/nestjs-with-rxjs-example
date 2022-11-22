@@ -19,7 +19,7 @@ export class FindUserTasksUseCase
   execute(userId: number): Observable<UserTask> {
     this.logger.log(`execute | execution started | userId: ${userId}`);
 
-    return this.userTaskRepository.getUserTasks(userId).pipe(
+    return this.userTaskRepository.getUserTasksById(userId).pipe(
       tap(() => {
         this.logger.log(`execute | finished execution | userId: ${userId}`);
       }),

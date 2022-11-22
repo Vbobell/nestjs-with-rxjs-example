@@ -1,4 +1,4 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 import { Observable } from 'rxjs';
 
 import { UserTaskRepository } from '@app/user-task/domain/abstract/user-task.repository';
@@ -6,19 +6,21 @@ import { UserTask } from '@app/user-task/domain/interface/user-task.interface';
 
 import { FindUserTasksUseCase } from '@app/user-task/application/find-user-tasks/find-user-tasks.use-case';
 
+import { createTestingModule } from '@test/util/test.module';
+
 describe('FindUserTasksUseCaseService', () => {
   let useCase: FindUserTasksUseCase;
   let repository: UserTaskRepository<unknown>;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    const module: TestingModule = await createTestingModule({
       providers: [
         FindUserTasksUseCase,
         {
           provide: UserTaskRepository,
           useFactory: jest.fn().mockImplementation(() => {
             return {
-              getUserTasks: jest.fn(),
+              getUserTasksById: jest.fn(),
             };
           }),
         },
@@ -52,7 +54,7 @@ describe('FindUserTasksUseCaseService', () => {
     });
 
     test('Then find user tasks with success', (done) => {
-      jest.spyOn(repository, 'getUserTasks').mockReturnValue(
+      jest.spyOn(repository, 'getUserTasksById').mockReturnValue(
         new Observable<UserTask>((subscribe) => {
           subscribe.next(userTasks);
           subscribe.complete();
@@ -66,7 +68,7 @@ describe('FindUserTasksUseCaseService', () => {
     });
 
     test('Then user tasks not found', (done) => {
-      jest.spyOn(repository, 'getUserTasks').mockReturnValue(
+      jest.spyOn(repository, 'getUserTasksById').mockReturnValue(
         new Observable<UserTask>((subscribe) => {
           subscribe.next({ ...userTasks, tasks: [] });
           subscribe.complete();

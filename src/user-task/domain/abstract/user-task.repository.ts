@@ -6,5 +6,5 @@ import { UserTask } from '@app/user-task/domain/interface/user-task.interface';
 
 @Injectable()
 export abstract class UserTaskRepository<T> extends Repository<T, UserTask> {
-  abstract getUserTasks(userId: number): Observable<UserTask>;
+  abstract getUserTasksById(userId: number): Observable<UserTask>;
 }
