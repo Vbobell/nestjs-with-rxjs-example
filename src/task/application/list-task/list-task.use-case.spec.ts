@@ -1,4 +1,4 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 import { Observable } from 'rxjs';
 
 import { TaskRepository } from '@app/task/domain/abstract/task.repository';
@@ -6,12 +6,14 @@ import { Task } from '@app/task/domain/interface/task.interface';
 
 import { ListTaskUseCase } from '@app/task/application/list-task/list-task.use-case';
 
+import { createTestingModule } from '@test/util/test.module';
+
 describe('ListTaskUseCase', () => {
   let useCase: ListTaskUseCase;
   let repository: TaskRepository<unknown>;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    const module: TestingModule = await createTestingModule({
       providers: [
         {
           provide: TaskRepository,

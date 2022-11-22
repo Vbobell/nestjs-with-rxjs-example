@@ -1,6 +1,6 @@
 export default {
   moduleFileExtensions: ['js', 'json', 'ts'],
-  rootDir: 'src',
+  rootDir: '.',
   testRegex: '.*\\.spec\\.ts$',
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
@@ -10,6 +10,8 @@ export default {
   testEnvironment: 'node',
   modulePaths: ['<rootDir>/'],
   moduleNameMapper: {
-    '^@app/(.*)$': '<rootDir>/$1',
+    '^@app/(.*)$': '<rootDir>/src/$1',
+    '^@test/(.*)$': '<rootDir>/test/$1',
+    '^@external/(.*)$': '<rootDir>/external/$1',
   },
 };

@@ -35,7 +35,7 @@ module.exports = {
           caseInsensitive: true,
         },
         'newlines-between': 'always',
-        groups: ['builtin', 'external', 'internal'],
+        groups: ['external', 'internal'],
         pathGroups: [
           {
             pattern: '**/domain/**',
@@ -57,6 +57,11 @@ module.exports = {
             group: 'internal',
             position: 'after',
           },
+          {
+            pattern: '**/util/**',
+            group: 'internal',
+            position: 'after',
+          },
         ],
       },
     ],
@@ -70,6 +75,6 @@ module.exports = {
         extensions: ['.js', '.ts', '.json'],
       },
     },
-    'import/internal-regex': '^@app/',
+    'import/internal-regex': '^@app|@test/',
   },
 };
