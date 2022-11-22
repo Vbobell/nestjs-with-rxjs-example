@@ -1,21 +1,27 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { catchError, map, Observable, of, tap } from 'rxjs';
+import { InjectRepository } from '@nestjs/typeorm';
+import { catchError, from, map, Observable, tap } from 'rxjs';
+import { Repository } from 'typeorm';
 
 import { TaskRepository } from '@app/task/domain/abstract/task.repository';
 import { Task } from '@app/task/domain/interface/task.interface';
 
-import * as TASKS from '@app/common/infra/database/task.db.json';
-import { TaskEntityMemory } from '@app/task/infra/repository/memory/entity/task.entity';
+import { TaskEntitySqlite } from '@app/task/infra/repository/sqlite/entity/task.entity';
 
 @Injectable()
-export class TaskRepositoryMemory implements TaskRepository<TaskEntityMemory> {
-  private readonly logger = new Logger(TaskRepositoryMemory.name);
+export class TaskRepositorySqlite implements TaskRepository<TaskEntitySqlite> {
+  private readonly logger = new Logger(TaskEntitySqlite.name);
+
+  constructor(
+    @InjectRepository(TaskEntitySqlite)
+    private readonly repository: Repository<TaskEntitySqlite>,
+  ) {}
 
   getTasks(): Observable<Task[]> {
     this.logger.log('getTasks | execution started');
 
-    return of(TASKS).pipe(
-      map((taskEntities: TaskEntityMemory[]) =>
+    return from(this.repository.find()).pipe(
+      map((taskEntities: TaskEntitySqlite[]) =>
         this.mapEntitiesToDomain(taskEntities),
       ),
       tap((tasks: Task[]) => {
@@ -30,7 +36,7 @@ export class TaskRepositoryMemory implements TaskRepository<TaskEntityMemory> {
     );
   }
 
-  mapEntityToDomain(taskEntityMemory: TaskEntityMemory): Task {
+  mapEntityToDomain(taskEntityMemory: TaskEntitySqlite): Task {
     const task: Task = {
       title: taskEntityMemory.title,
       description: taskEntityMemory.description,
@@ -40,7 +46,7 @@ export class TaskRepositoryMemory implements TaskRepository<TaskEntityMemory> {
     return task;
   }
 
-  mapEntitiesToDomain(taskEntities: TaskEntityMemory[]): Task[] {
+  mapEntitiesToDomain(taskEntities: TaskEntitySqlite[]): Task[] {
     return taskEntities.map((taskEntity) => this.mapEntityToDomain(taskEntity));
   }
 }
