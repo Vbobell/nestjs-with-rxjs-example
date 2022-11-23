@@ -1,10 +1,12 @@
-# Nest-observable-example
+# nestjs-with-rxjs-example
 
-Esse projeto tem o intuito de exemplificar como manipular o padrão `Observable` do `rxjs`, utilzando a ferramenta `nestjs`.
+## PT-BR
+
+Esse projeto tem o intuito de exemplificar a utlização do padrão `Observable` e `rxjs`, utilizando a ferramenta `nestjs`.
 
 - [Documentação dos exemplos](https://vbobell.github.io/nestjs-with-rxjs-example)
 
-## Execução
+### Execução
 
 Executar build:
 
