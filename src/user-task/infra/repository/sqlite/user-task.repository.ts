@@ -1,11 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { catchError, from, map, Observable, tap } from 'rxjs';
+import { from, map, Observable } from 'rxjs';
 import { Repository } from 'typeorm';
 
 import { UserTaskRepository } from '@app/user-task/domain/abstract/user-task.repository';
 import { UserTask } from '@app/user-task/domain/interface/user-task.interface';
 
+import { loggerOperator } from '@app/common/infra/utils/logger-operator';
 import { TaskEntitySqlite } from '@app/task/infra/repository/sqlite/entity/task.entity';
 
 @Injectable()
@@ -20,8 +21,6 @@ export class UserTaskRepositorySqlite
   ) {}
 
   getUserTasksById(userId: number): Observable<UserTask> {
-    this.logger.log(`getUserTasks | execution started | userId: ${userId}`);
-
     return from(
       this.repository.find({
         where: {
@@ -42,14 +41,16 @@ export class UserTaskRepositorySqlite
 
         return userTask;
       }),
-      tap(() => {
-        this.logger.log(
-          `getUserTasks | finished execution | userId: ${userId}`,
-        );
-      }),
-      catchError((error: unknown) => {
-        this.logger.error('getUserTasks | execution with error', error);
-        throw error;
+      loggerOperator(this.logger, {
+        initLog: {
+          message: `getUserTasks | execution started | userId: ${userId}`,
+        },
+        endLog: {
+          message: `getUserTasks | finished execution | userId: ${userId}`,
+        },
+        errorLog: {
+          message: `getUserTasks | execution with error | userId: ${userId}`,
+        },
       }),
     );
   }

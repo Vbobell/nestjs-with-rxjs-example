@@ -12,10 +12,12 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { catchError, Observable, switchMap, tap } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 
 import { NotFoundResponseExceptionDTO } from '@app/common/domain/dto/not-found-response.exception.dto';
 import { UserTasksResponseDTO } from '@app/user-task/domain/dto/user-task.dto';
+
+import { loggerOperator } from '@app/common/infra/utils/logger-operator';
 
 import { FindUserTasksUseCase } from '@app/user-task/application/find-user-tasks/find-user-tasks.use-case';
 import { CheckExistUserUseCase } from '@app/user/application/check-exist-user/check-exist-user.use-case';
@@ -44,15 +46,17 @@ export class UserTaskController {
   findUserTasksById(
     @Param('id', ParseIntPipe) userId: number,
   ): Observable<UserTasksResponseDTO> {
-    this.logger.log(
-      `findUserTasksById | execution started | userId: ${userId}`,
-    );
-
     return this.checkExistUserUseCase.execute(userId).pipe(
-      tap((existUser) => {
-        this.logger.log(
-          `findUserTasksById | check exist user finished | userId: ${userId} | existUser: ${existUser}`,
-        );
+      loggerOperator(this.logger, {
+        initLog: {
+          message: `findUserTasksById | init check exist user finished | userId: ${userId}`,
+        },
+        endLog: {
+          message: `findUserTasksById | check exist user finished | userId: ${userId}`,
+        },
+        errorLog: {
+          message: `findUserTasksById | check exist user with error | userId: ${userId}`,
+        },
       }),
       switchMap((existUser) => {
         if (!existUser) {
@@ -61,17 +65,16 @@ export class UserTaskController {
 
         return this.findUserTasksUseCase.execute(userId);
       }),
-      tap(() => {
-        this.logger.log(
-          `findUserTasksById | finished execution | userId: ${userId}`,
-        );
-      }),
-      catchError((error: unknown) => {
-        this.logger.error(
-          `findUserTasksById | execution with error | userId: ${userId}`,
-          error,
-        );
-        throw error;
+      loggerOperator(this.logger, {
+        initLog: {
+          message: `findUserTasksById | init find user execution | userId: ${userId}`,
+        },
+        endLog: {
+          message: `findUserTasksById | find user finished | userId: ${userId}`,
+        },
+        errorLog: {
+          message: `findUserTasksById | find user execution with error | userId: ${userId}`,
+        },
       }),
     );
   }
