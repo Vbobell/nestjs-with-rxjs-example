@@ -84,7 +84,9 @@ Para visualizar a implementação desse fluxo acessar:
 
 ### Exemplo com nest-js
 
-[git - Camada de repositório](https://github.com/Vbobell/nestjs-with-rxjs-example/blob/main/src/user/infra/repository/sqlite/user.repository.ts#L33)
+No projeto está implementado no operador personalizado de logs que é utilizado nas camadas: `Repository`, `Application` e `Interface`.
+
+[git - Operador para tratar logs](https://github.com/Vbobell/nestjs-with-rxjs-example/blob/main/src/common/infra/utils/logger-operator.ts#L33)
 
 ### Docs
 

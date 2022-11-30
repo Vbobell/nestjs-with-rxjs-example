@@ -1,12 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { catchError, from, map, Observable, tap } from 'rxjs';
+import { from, map, Observable } from 'rxjs';
 import { Repository } from 'typeorm';
 
 import { NotFoundException } from '@app/common/domain/interface/not-found.exception';
 import { UserRepository } from '@app/user/domain/abstract/user.repository';
 import { User } from '@app/user/domain/interface/user.interface';
 
+import { loggerOperator } from '@app/common/infra/utils/logger-operator';
 import { UserEntitySqlite } from '@app/user/infra/repository/sqlite/entity/user.entity';
 
 @Injectable()
@@ -19,27 +20,19 @@ export class UserRepositorySqlite implements UserRepository<UserEntitySqlite> {
   ) {}
 
   getUsers(): Observable<User[]> {
-    this.logger.log('getUsers | execution started');
-
     return from(this.repository.find()).pipe(
       map((userEntities: UserEntitySqlite[]) =>
         this.mapEntitiesToDomain(userEntities),
       ),
-      tap((users: User[]) => {
-        this.logger.log(
-          `getUsers | finished execution | number of users: ${users.length}`,
-        );
-      }),
-      catchError((error: unknown) => {
-        this.logger.error('getUsers | execution with error', error);
-        throw error;
+      loggerOperator(this.logger, {
+        initLog: { message: 'getUsers | execution started' },
+        endLog: { message: 'getUsers | finished execution' },
+        errorLog: { message: 'getUsers | execution with error' },
       }),
     );
   }
 
   getUserById(userId: number): Observable<User> {
-    this.logger.log(`getUserById | execution started | userId: ${userId}`);
-
     return from(
       this.repository.findOneBy({
         id: userId,
@@ -52,39 +45,37 @@ export class UserRepositorySqlite implements UserRepository<UserEntitySqlite> {
 
         return this.mapEntityToDomain(userEntity);
       }),
-      tap((user: User) => {
-        this.logger.log(
-          `getUserById | finished execution | userId: ${userId} | user: ${JSON.stringify(
-            user,
-          )}`,
-        );
-      }),
-      catchError((error: unknown) => {
-        this.logger.error('getUserById | execution with error', error);
-        throw error;
+      loggerOperator(this.logger, {
+        initLog: {
+          message: `getUserById | execution started | userId: ${userId}`,
+        },
+        endLog: {
+          message: `getUserById | finished execution | userId: ${userId}`,
+        },
+        errorLog: {
+          message: `getUserById | execution with error | userId: ${userId}`,
+        },
       }),
     );
   }
 
   checkExistUserById(userId: number): Observable<boolean> {
-    this.logger.log(
-      `checkExistUserById | execution started | userId: ${userId}`,
-    );
-
     return from(
       this.repository.countBy({
         id: userId,
       }),
     ).pipe(
       map((count: number) => count > 0),
-      tap((existUser: boolean) => {
-        this.logger.log(
-          `checkExistUserById | finished execution | userId: ${userId} | existUser: ${existUser}`,
-        );
-      }),
-      catchError((error: unknown) => {
-        this.logger.error('checkExistUserById | execution with error', error);
-        throw error;
+      loggerOperator(this.logger, {
+        initLog: {
+          message: `checkExistUserById | execution started | userId: ${userId}`,
+        },
+        endLog: {
+          message: `checkExistUserById | finished execution | userId: ${userId}`,
+        },
+        errorLog: {
+          message: `checkExistUserById | execution with error | userId: ${userId}`,
+        },
       }),
     );
   }

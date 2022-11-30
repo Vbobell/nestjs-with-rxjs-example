@@ -1,8 +1,10 @@
 import { Controller, Get, HttpCode, Logger } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { catchError, Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { TaskResponseDTO } from '@app/task/domain/dto/task-response.dto';
+
+import { loggerOperator } from '@app/common/infra/utils/logger-operator';
 
 import { ListTaskUseCase } from '@app/task/application/list-task/list-task.use-case';
 
@@ -20,14 +22,16 @@ export class TaskController {
     this.logger.log('listTasks | execution started');
 
     return this.listTaskUseCase.execute().pipe(
-      tap((tasks: TaskResponseDTO[]) => {
-        this.logger.log(
-          `listTasks | finished execution | number of tasks: ${tasks.length}`,
-        );
-      }),
-      catchError((error: unknown) => {
-        this.logger.error('listTasks | execution with error', error);
-        throw error;
+      loggerOperator(this.logger, {
+        initLog: {
+          message: 'listTasks | execution started',
+        },
+        endLog: {
+          message: 'listTasks | finished execution',
+        },
+        errorLog: {
+          message: 'listTasks | execution with error',
+        },
       }),
     );
   }
