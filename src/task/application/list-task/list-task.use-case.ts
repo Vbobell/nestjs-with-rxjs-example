@@ -1,8 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { catchError, Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { TaskRepository } from '@app/task/domain/abstract/task.repository';
 import { Task } from '@app/task/domain/interface/task.interface';
+
+import { loggerOperator } from '@app/common/infra/utils/logger-operator';
 
 import { UseCase } from '@app/common/application/abstract.use-case';
 
@@ -13,17 +15,17 @@ export class ListTaskUseCase implements UseCase<undefined, Observable<Task[]>> {
   constructor(private readonly taskRepository: TaskRepository<unknown>) {}
 
   execute(): Observable<Task[]> {
-    this.logger.log('execute | execution started');
-
     return this.taskRepository.getTasks().pipe(
-      tap((tasks: Task[]) => {
-        this.logger.log(
-          `execute | finished execution | number of tasks: ${tasks.length}`,
-        );
-      }),
-      catchError((error: unknown) => {
-        this.logger.error('execute | execution with error', error);
-        throw error;
+      loggerOperator(this.logger, {
+        initLog: {
+          message: 'execute | execution started',
+        },
+        endLog: {
+          message: 'execute | finished execution',
+        },
+        errorLog: {
+          message: 'execute | execution with error',
+        },
       }),
     );
   }
