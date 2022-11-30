@@ -60,11 +60,9 @@ Para visualizar a implementação desse fluxo acessar:
 
 ### Exemplo com nest-js
 
-No projeto está implementado em todas as camadas `Repository`, `Application` e `Interface`.
+No projeto está implementado no operador personalizado de logs que é utilizado nas camadas: `Repository`, `Application` e `Interface`.
 
-[git - Camada de repositório](https://github.com/Vbobell/nestjs-with-rxjs-example/blob/main/src/user/infra/repository/sqlite/user.repository.ts#L28)
-[git - Camada de aplicação](https://github.com/Vbobell/nestjs-with-rxjs-example/blob/main/src/user/application/find-user-by-id/find-user-by-id.use-case.ts#L19)
-[git - Camada de interface](https://github.com/Vbobell/nestjs-with-rxjs-example/blob/main/src/user/interface/http/user.controller.ts#L53)
+[git - Operador para tratar logs](https://github.com/Vbobell/nestjs-with-rxjs-example/blob/main/src/common/infra/utils/logger-operator.ts#L30)
 
 ### Docs
 
