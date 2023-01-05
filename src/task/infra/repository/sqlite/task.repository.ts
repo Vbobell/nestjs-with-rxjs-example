@@ -11,7 +11,7 @@ import { TaskEntitySqlite } from '@app/task/infra/repository/sqlite/entity/task.
 
 @Injectable()
 export class TaskRepositorySqlite implements TaskRepository<TaskEntitySqlite> {
-  private readonly logger = new Logger(TaskEntitySqlite.name);
+  private readonly logger = new Logger(TaskRepositorySqlite.name);
 
   constructor(
     @InjectRepository(TaskEntitySqlite)
