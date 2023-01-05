@@ -13,7 +13,7 @@ import { TaskEntitySqlite } from '@app/task/infra/repository/sqlite/entity/task.
 export class UserTaskRepositorySqlite
   implements UserTaskRepository<TaskEntitySqlite>
 {
-  private readonly logger = new Logger(TaskEntitySqlite.name);
+  private readonly logger = new Logger(UserTaskRepositorySqlite.name);
 
   constructor(
     @InjectRepository(TaskEntitySqlite)
