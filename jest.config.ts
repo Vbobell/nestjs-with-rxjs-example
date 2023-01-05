@@ -5,7 +5,10 @@ export default {
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
-  collectCoverageFrom: ['<rootDir>/**/*.(t|j)s'],
+  collectCoverageFrom: [
+    '<rootDir>/src/**/*.(t|j)s',
+    '<rootDir>/test/**/*.(t|j)s',
+  ],
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
   modulePaths: ['<rootDir>/'],
