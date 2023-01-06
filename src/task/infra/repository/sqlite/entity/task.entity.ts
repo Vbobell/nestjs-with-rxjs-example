@@ -32,8 +32,8 @@ export class TaskEntitySqlite {
 
   @Index({ unique: false })
   @Column('int', {
-    comment: 'Title of task',
-    nullable: false,
+    comment: 'Board id of task',
+    nullable: true,
   })
   boardId?: number;
 
