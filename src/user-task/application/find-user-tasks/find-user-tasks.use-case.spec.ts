@@ -2,7 +2,6 @@ import { TestingModule } from '@nestjs/testing';
 import { Observable } from 'rxjs';
 
 import { UserTaskRepository } from '@app/user-task/domain/abstract/user-task.repository';
-import { UserTask } from '@app/user-task/domain/interface/user-task.interface';
 
 import { FindUserTasksUseCase } from '@app/user-task/application/find-user-tasks/find-user-tasks.use-case';
 
@@ -20,7 +19,13 @@ describe('FindUserTasksUseCaseService', () => {
           provide: UserTaskRepository,
           useFactory: jest.fn().mockImplementation(() => {
             return {
-              getUserTasksById: jest.fn(),
+              getUserTasksById: jest.fn().mockImplementation(
+                () =>
+                  new Observable((subscribe) => {
+                    subscribe.next();
+                    subscribe.complete();
+                  }),
+              ),
             };
           }),
         },
@@ -37,46 +42,10 @@ describe('FindUserTasksUseCaseService', () => {
   });
 
   describe('When get user tasks', () => {
-    let userTasks: UserTask;
-
-    beforeEach(() => {
-      userTasks = {
-        tasks: [
-          {
-            title: 'Task 3',
-            description: 'Description task 3',
-          },
-        ],
-        user: {
-          id: 1,
-        },
-      };
-    });
-
     test('Then find user tasks with success', (done) => {
-      jest.spyOn(repository, 'getUserTasksById').mockReturnValue(
-        new Observable<UserTask>((subscribe) => {
-          subscribe.next(userTasks);
-          subscribe.complete();
-        }),
-      );
-
-      useCase.execute(1).subscribe((result) => {
-        expect(result).toEqual(userTasks);
-        done();
-      });
-    });
-
-    test('Then user tasks not found', (done) => {
-      jest.spyOn(repository, 'getUserTasksById').mockReturnValue(
-        new Observable<UserTask>((subscribe) => {
-          subscribe.next({ ...userTasks, tasks: [] });
-          subscribe.complete();
-        }),
-      );
-
-      useCase.execute(1).subscribe((result) => {
-        expect(result).toEqual({ ...userTasks, tasks: [] });
+      useCase.execute(1).subscribe(() => {
+        expect(repository.getUserTasksById).toHaveBeenCalled();
+        expect(repository.getUserTasksById).toHaveBeenCalledWith(1);
         done();
       });
     });

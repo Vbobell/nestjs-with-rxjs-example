@@ -56,6 +56,7 @@ describe('TaskRepositorySqlite', () => {
           title: 'Task 3',
           description: 'Description task 3',
           createdAt: new Date(),
+          boardId: 1,
           user: {
             id: 1,
             name: 'John',
@@ -66,6 +67,7 @@ describe('TaskRepositorySqlite', () => {
           title: 'Task 4',
           description: 'Description task 4',
           createdAt: new Date(),
+          boardId: 1,
           user: {
             id: 2,
             name: 'Joana',
@@ -88,6 +90,7 @@ describe('TaskRepositorySqlite', () => {
           {
             title: 'Task 3',
             description: 'Description task 3',
+            boardId: 1,
             user: {
               id: 1,
               name: 'John',
@@ -96,6 +99,7 @@ describe('TaskRepositorySqlite', () => {
           {
             title: 'Task 4',
             description: 'Description task 4',
+            boardId: 1,
             user: {
               id: 2,
               name: 'Joana',

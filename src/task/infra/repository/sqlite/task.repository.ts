@@ -41,7 +41,8 @@ export class TaskRepositorySqlite implements TaskRepository<TaskEntitySqlite> {
     const task: Task = {
       title: taskEntityMemory.title,
       description: taskEntityMemory.description,
-      ...(taskEntityMemory.user ? { user: taskEntityMemory.user } : {}),
+      ...(taskEntityMemory.boardId && { boardId: taskEntityMemory.boardId }),
+      ...(taskEntityMemory.user && { user: taskEntityMemory.user }),
     };
 
     return task;
