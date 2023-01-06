@@ -19,6 +19,7 @@ describe('TaskRepositorySqlite', () => {
           useFactory: jest.fn().mockImplementation(() => {
             return {
               find: jest.fn(),
+              findOneBy: jest.fn(),
             };
           }),
         },
@@ -108,6 +109,60 @@ describe('TaskRepositorySqlite', () => {
         ]);
 
         done();
+      });
+    });
+  });
+
+  describe('When find task', () => {
+    beforeEach(() => {
+      jest.spyOn(repository, 'findOneBy').mockResolvedValue({
+        id: 1,
+        title: 'Task 1',
+        description: 'Description task 1',
+        boardId: 1,
+        createdAt: new Date(),
+        user: {
+          id: 1,
+          name: 'John',
+        },
+      });
+    });
+
+    test('Then get task with success', (done) => {
+      repositoryImpl.getTask(1).subscribe((result) => {
+        expect(repository.findOneBy).toHaveBeenCalled();
+        expect(repository.findOneBy).toHaveBeenCalledWith({ id: 1 });
+
+        expect(result).toEqual({
+          title: 'Task 1',
+          description: 'Description task 1',
+          boardId: 1,
+          user: {
+            id: 1,
+            name: 'John',
+          },
+        });
+
+        done();
+      });
+    });
+
+    describe('And task not found', () => {
+      beforeEach(() => {
+        jest.spyOn(repository, 'findOneBy').mockResolvedValue(null);
+      });
+
+      test('Then user not found', (done) => {
+        repositoryImpl.getTask(3).subscribe({
+          error: (error) => {
+            expect(repository.findOneBy).toHaveBeenCalled();
+            expect(repository.findOneBy).toHaveBeenCalledWith({ id: 3 });
+
+            expect(error.message).toEqual('Task not found');
+
+            done();
+          },
+        });
       });
     });
   });

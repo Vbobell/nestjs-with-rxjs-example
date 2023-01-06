@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, map, Observable } from 'rxjs';
 import { Repository } from 'typeorm';
@@ -32,6 +32,29 @@ export class TaskRepositorySqlite implements TaskRepository<TaskEntitySqlite> {
         },
         errorLog: {
           message: 'getTasks | execution with error',
+        },
+      }),
+    );
+  }
+
+  getTask(id: number): Observable<Task> {
+    return from(this.repository.findOneBy({ id })).pipe(
+      map((taskEntity: TaskEntitySqlite) => {
+        if (!taskEntity) {
+          throw new NotFoundException('Task not found');
+        }
+
+        return this.mapEntityToDomain(taskEntity);
+      }),
+      loggerOperator(this.logger, {
+        initLog: {
+          message: 'getTask | execution started',
+        },
+        endLog: {
+          message: 'getTask | finished execution',
+        },
+        errorLog: {
+          message: 'getTask | execution with error',
         },
       }),
     );
