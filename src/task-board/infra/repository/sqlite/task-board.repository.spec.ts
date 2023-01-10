@@ -83,6 +83,7 @@ describe('TaskBoardRepositorySqlite', () => {
             name: 'Board 2',
             stages: [
               {
+                id: 1,
                 name: 'stage 1',
                 boardId: 2,
               },
@@ -128,6 +129,7 @@ describe('TaskBoardRepositorySqlite', () => {
           name: 'Board 2',
           stages: [
             {
+              id: 1,
               name: 'stage 1',
               boardId: 2,
             },

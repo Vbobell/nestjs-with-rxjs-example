@@ -70,6 +70,7 @@ export class TaskBoardRepositorySqlite
       entity?.stages?.map<TaskBoardStage>(
         (stage: TaskBoardStageEntitySqlite) => {
           return {
+            id: stage.id,
             boardId: stage.board.id,
             name: stage.name,
           };
