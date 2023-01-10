@@ -7,6 +7,8 @@ import { TaskBoardStageEntitySqlite } from '@app/task-board/infra/repository/sql
 import { TaskBoardEntitySqlite } from '@app/task-board/infra/repository/sqlite/entity/task-board.entity';
 import { TaskBoardRepositorySqlite } from '@app/task-board/infra/repository/sqlite/task-board.repository';
 
+import { FindTaskBoardByIdUseCase } from '@app/task-board/application/use-case/find-task-board-by-id/find-task-board-by-id.use-case';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -19,6 +21,8 @@ import { TaskBoardRepositorySqlite } from '@app/task-board/infra/repository/sqli
       provide: TaskBoardRepository,
       useClass: TaskBoardRepositorySqlite,
     },
+    FindTaskBoardByIdUseCase,
   ],
+  exports: [FindTaskBoardByIdUseCase],
 })
 export class TaskBoardModule {}
