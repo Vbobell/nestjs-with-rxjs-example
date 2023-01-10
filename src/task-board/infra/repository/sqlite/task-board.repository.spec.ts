@@ -19,6 +19,7 @@ describe('TaskBoardRepositorySqlite', () => {
           useFactory: jest.fn().mockImplementation(() => {
             return {
               find: jest.fn(),
+              findOneBy: jest.fn(),
             };
           }),
         },
@@ -39,7 +40,7 @@ describe('TaskBoardRepositorySqlite', () => {
     expect(repositoryImpl).toBeDefined();
   });
 
-  describe('When list all tasks', () => {
+  describe('When list all task boards', () => {
     beforeEach(() => {
       jest.spyOn(repositoryTaskBoard, 'find').mockResolvedValue([
         {
@@ -71,6 +72,8 @@ describe('TaskBoardRepositorySqlite', () => {
 
     test('Then get list with success', (done) => {
       repositoryImpl.getTaskBoards().subscribe((result) => {
+        expect(repositoryTaskBoard.find).toHaveBeenCalled();
+
         expect(result).toEqual([
           {
             name: 'Board 1',
@@ -88,6 +91,71 @@ describe('TaskBoardRepositorySqlite', () => {
         ]);
 
         done();
+      });
+    });
+  });
+
+  describe('When get task board by id', () => {
+    beforeEach(() => {
+      jest.spyOn(repositoryTaskBoard, 'findOneBy').mockResolvedValue({
+        id: 2,
+        name: 'Board 2',
+        description: 'Description board 2',
+        createdAt: new Date(),
+        stages: [
+          {
+            id: 1,
+            name: 'stage 1',
+            board: {
+              id: 2,
+              name: 'Board 2',
+              description: 'Description board 2',
+              createdAt: new Date(),
+            },
+          },
+        ],
+      });
+    });
+
+    test('Then get board with success', (done) => {
+      repositoryImpl.getTaskBoardById(2).subscribe((result) => {
+        expect(repositoryTaskBoard.findOneBy).toHaveBeenCalled();
+        expect(repositoryTaskBoard.findOneBy).toHaveBeenCalledWith({
+          id: 2,
+        });
+
+        expect(result).toEqual({
+          name: 'Board 2',
+          stages: [
+            {
+              name: 'stage 1',
+              boardId: 2,
+            },
+          ],
+        });
+
+        done();
+      });
+    });
+
+    describe('And task board not found', () => {
+      beforeEach(() => {
+        jest.spyOn(repositoryTaskBoard, 'findOneBy').mockResolvedValue(null);
+      });
+
+      test('Then throw task board not found', (done) => {
+        repositoryImpl.getTaskBoardById(3).subscribe({
+          error: (error) => {
+            expect(repositoryTaskBoard.findOneBy).toHaveBeenCalled();
+            expect(repositoryTaskBoard.findOneBy).toHaveBeenCalledWith({
+              id: 3,
+            });
+
+            expect(error.message).toEqual('Task board not found');
+
+            done();
+          },
+        });
       });
     });
   });

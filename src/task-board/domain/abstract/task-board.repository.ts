@@ -7,4 +7,5 @@ import { TaskBoard } from '@app/task-board/domain/interface/task-board.interface
 @Injectable()
 export abstract class TaskBoardRepository<T> extends Repository<T, TaskBoard> {
   abstract getTaskBoards(): Observable<TaskBoard[]>;
+  abstract getTaskBoardById(id: number): Observable<TaskBoard>;
 }

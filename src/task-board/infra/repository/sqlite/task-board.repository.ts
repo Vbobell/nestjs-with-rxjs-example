@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { from, map, Observable } from 'rxjs';
 import { Repository } from 'typeorm';
 
+import { NotFoundException } from '@app/common/domain/interface/not-found.exception';
 import { TaskBoardRepository } from '@app/task-board/domain/abstract/task-board.repository';
 import { TaskBoardStage } from '@app/task-board/domain/interface/task-board-stage.interface';
 import { TaskBoard } from '@app/task-board/domain/interface/task-board.interface';
@@ -36,6 +37,29 @@ export class TaskBoardRepositorySqlite
         },
         errorLog: {
           message: 'getTaskBoards | execution with error',
+        },
+      }),
+    );
+  }
+
+  getTaskBoardById(id: number): Observable<TaskBoard> {
+    return from(this.repository.findOneBy({ id })).pipe(
+      map((taskBoardEntity: TaskBoardEntitySqlite) => {
+        if (!taskBoardEntity) {
+          throw new NotFoundException('Task board not found');
+        }
+
+        return this.mapEntityToDomain(taskBoardEntity);
+      }),
+      loggerOperator(this.logger, {
+        initLog: {
+          message: 'getTaskBoard | execution started',
+        },
+        endLog: {
+          message: 'getTaskBoard | finished execution',
+        },
+        errorLog: {
+          message: 'getTaskBoard | execution with error',
         },
       }),
     );
