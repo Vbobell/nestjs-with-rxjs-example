@@ -166,4 +166,70 @@ describe('TaskRepositorySqlite', () => {
       });
     });
   });
+
+  describe('When find task by board id and board stage id', () => {
+    beforeEach(() => {
+      jest.spyOn(repository, 'findOneBy').mockResolvedValue({
+        id: 1,
+        title: 'Task 1',
+        description: 'Description task 1',
+        boardId: 1,
+        boardStageId: 1,
+        createdAt: new Date(),
+        user: {
+          id: 1,
+          name: 'John',
+        },
+      });
+    });
+
+    test('Then get task with success', (done) => {
+      repositoryImpl
+        .getTaskByBoardIdAndBoardStageId({ boardId: 1, boardStageId: 1 })
+        .subscribe((result) => {
+          expect(repository.findOneBy).toHaveBeenCalled();
+          expect(repository.findOneBy).toHaveBeenCalledWith({
+            boardId: 1,
+            boardStageId: 1,
+          });
+
+          expect(result).toEqual({
+            title: 'Task 1',
+            description: 'Description task 1',
+            boardId: 1,
+            boardStageId: 1,
+            user: {
+              id: 1,
+              name: 'John',
+            },
+          });
+
+          done();
+        });
+    });
+
+    describe('And task not found', () => {
+      beforeEach(() => {
+        jest.spyOn(repository, 'findOneBy').mockResolvedValue(null);
+      });
+
+      test('Then user not found', (done) => {
+        repositoryImpl
+          .getTaskByBoardIdAndBoardStageId({ boardId: 3, boardStageId: 3 })
+          .subscribe({
+            error: (error) => {
+              expect(repository.findOneBy).toHaveBeenCalled();
+              expect(repository.findOneBy).toHaveBeenCalledWith({
+                boardId: 3,
+                boardStageId: 3,
+              });
+
+              expect(error.message).toEqual('Task not found');
+
+              done();
+            },
+          });
+      });
+    });
+  });
 });

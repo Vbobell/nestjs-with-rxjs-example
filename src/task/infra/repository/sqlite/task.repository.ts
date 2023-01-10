@@ -60,11 +60,39 @@ export class TaskRepositorySqlite implements TaskRepository<TaskEntitySqlite> {
     );
   }
 
+  getTaskByBoardIdAndBoardStageId(
+    params: Pick<Task, 'boardId' | 'boardStageId'>,
+  ): Observable<Task> {
+    return from(this.repository.findOneBy({ ...params })).pipe(
+      map((taskEntity: TaskEntitySqlite) => {
+        if (!taskEntity) {
+          throw new NotFoundException('Task not found');
+        }
+
+        return this.mapEntityToDomain(taskEntity);
+      }),
+      loggerOperator(this.logger, {
+        initLog: {
+          message: 'getTaskByBoardIdAndBoardStageId | execution started',
+        },
+        endLog: {
+          message: 'getTaskByBoardIdAndBoardStageId | finished execution',
+        },
+        errorLog: {
+          message: 'getTaskByBoardIdAndBoardStageId | execution with error',
+        },
+      }),
+    );
+  }
+
   mapEntityToDomain(taskEntityMemory: TaskEntitySqlite): Task {
     const task: Task = {
       title: taskEntityMemory.title,
       description: taskEntityMemory.description,
       ...(taskEntityMemory.boardId && { boardId: taskEntityMemory.boardId }),
+      ...(taskEntityMemory.boardStageId && {
+        boardStageId: taskEntityMemory.boardStageId,
+      }),
       ...(taskEntityMemory.user && { user: taskEntityMemory.user }),
     };
 
