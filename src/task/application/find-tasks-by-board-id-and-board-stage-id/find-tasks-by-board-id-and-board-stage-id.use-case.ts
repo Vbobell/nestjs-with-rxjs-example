@@ -9,17 +9,18 @@ import { loggerOperator } from '@app/common/infra/utils/logger-operator';
 import { UseCase } from '@app/common/application/abstract.use-case';
 
 @Injectable()
-export class FindTaskByBoardIdAndBoardStageIdUseCase
-  implements UseCase<Pick<Task, 'boardId' | 'boardStageId'>, Observable<Task>>
+export class FindTasksByBoardIdAndBoardStageIdUseCase
+  implements
+    UseCase<Pick<Task, 'boardId' | 'boardStageId'>, Observable<Task[]>>
 {
   private readonly logger = new Logger(
-    FindTaskByBoardIdAndBoardStageIdUseCase.name,
+    FindTasksByBoardIdAndBoardStageIdUseCase.name,
   );
 
   constructor(private readonly taskRepository: TaskRepository<unknown>) {}
 
-  execute(params: Pick<Task, 'boardId' | 'boardStageId'>): Observable<Task> {
-    return this.taskRepository.getTaskByBoardIdAndBoardStageId(params).pipe(
+  execute(params: Pick<Task, 'boardId' | 'boardStageId'>): Observable<Task[]> {
+    return this.taskRepository.getTasksByBoardIdAndBoardStageId(params).pipe(
       loggerOperator(this.logger, {
         initLog: {
           message: 'execute | execution started',
