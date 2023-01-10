@@ -37,6 +37,13 @@ export class TaskEntitySqlite {
   })
   boardId?: number;
 
+  @Index({ unique: false })
+  @Column('int', {
+    comment: 'Board stage id of task',
+    nullable: true,
+  })
+  boardStageId?: number;
+
   @ManyToOne(() => UserEntitySqlite, {
     nullable: true,
   })

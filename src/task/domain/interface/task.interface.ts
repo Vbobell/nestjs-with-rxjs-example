@@ -4,5 +4,6 @@ export interface Task {
   title: string;
   description: string;
   boardId?: number;
+  boardStageId?: number;
   user?: Pick<User, 'id'>;
 }
