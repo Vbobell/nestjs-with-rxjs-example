@@ -19,6 +19,7 @@ describe('TaskRepositorySqlite', () => {
           useFactory: jest.fn().mockImplementation(() => {
             return {
               find: jest.fn(),
+              findBy: jest.fn(),
               findOneBy: jest.fn(),
             };
           }),
@@ -167,42 +168,46 @@ describe('TaskRepositorySqlite', () => {
     });
   });
 
-  describe('When find task by board id and board stage id', () => {
+  describe('When find tasks by board id and board stage id', () => {
     beforeEach(() => {
-      jest.spyOn(repository, 'findOneBy').mockResolvedValue({
-        id: 1,
-        title: 'Task 1',
-        description: 'Description task 1',
-        boardId: 1,
-        boardStageId: 1,
-        createdAt: new Date(),
-        user: {
+      jest.spyOn(repository, 'findBy').mockResolvedValue([
+        {
           id: 1,
-          name: 'John',
+          title: 'Task 1',
+          description: 'Description task 1',
+          boardId: 1,
+          boardStageId: 1,
+          createdAt: new Date(),
+          user: {
+            id: 1,
+            name: 'John',
+          },
         },
-      });
+      ]);
     });
 
     test('Then get task with success', (done) => {
       repositoryImpl
-        .getTaskByBoardIdAndBoardStageId({ boardId: 1, boardStageId: 1 })
+        .getTasksByBoardIdAndBoardStageId({ boardId: 1, boardStageId: 1 })
         .subscribe((result) => {
-          expect(repository.findOneBy).toHaveBeenCalled();
-          expect(repository.findOneBy).toHaveBeenCalledWith({
+          expect(repository.findBy).toHaveBeenCalled();
+          expect(repository.findBy).toHaveBeenCalledWith({
             boardId: 1,
             boardStageId: 1,
           });
 
-          expect(result).toEqual({
-            title: 'Task 1',
-            description: 'Description task 1',
-            boardId: 1,
-            boardStageId: 1,
-            user: {
-              id: 1,
-              name: 'John',
+          expect(result).toEqual([
+            {
+              title: 'Task 1',
+              description: 'Description task 1',
+              boardId: 1,
+              boardStageId: 1,
+              user: {
+                id: 1,
+                name: 'John',
+              },
             },
-          });
+          ]);
 
           done();
         });
@@ -210,16 +215,16 @@ describe('TaskRepositorySqlite', () => {
 
     describe('And task not found', () => {
       beforeEach(() => {
-        jest.spyOn(repository, 'findOneBy').mockResolvedValue(null);
+        jest.spyOn(repository, 'findBy').mockResolvedValue(null);
       });
 
       test('Then user not found', (done) => {
         repositoryImpl
-          .getTaskByBoardIdAndBoardStageId({ boardId: 3, boardStageId: 3 })
+          .getTasksByBoardIdAndBoardStageId({ boardId: 3, boardStageId: 3 })
           .subscribe({
             error: (error) => {
-              expect(repository.findOneBy).toHaveBeenCalled();
-              expect(repository.findOneBy).toHaveBeenCalledWith({
+              expect(repository.findBy).toHaveBeenCalled();
+              expect(repository.findBy).toHaveBeenCalledWith({
                 boardId: 3,
                 boardStageId: 3,
               });
