@@ -12,6 +12,8 @@ import { TaskBoardRepositorySqlite } from '@app/task-board/infra/repository/sqli
 import { TaskBoardService } from '@app/task-board/application/services/task-board/task-board.service';
 import { FindTaskBoardByIdUseCase } from '@app/task-board/application/use-case/find-task-board-by-id/find-task-board-by-id.use-case';
 
+import { TaskBoardController } from '@app/task-board/interface/http/task-board.controller';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -29,5 +31,6 @@ import { FindTaskBoardByIdUseCase } from '@app/task-board/application/use-case/f
     TaskBoardService,
   ],
   exports: [FindTaskBoardByIdUseCase, TaskBoardService],
+  controllers: [TaskBoardController],
 })
 export class TaskBoardModule {}
