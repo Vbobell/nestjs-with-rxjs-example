@@ -19,7 +19,7 @@ describe('TaskBoardRepositorySqlite', () => {
           useFactory: jest.fn().mockImplementation(() => {
             return {
               find: jest.fn(),
-              findOneBy: jest.fn(),
+              findOne: jest.fn(),
             };
           }),
         },
@@ -98,7 +98,7 @@ describe('TaskBoardRepositorySqlite', () => {
 
   describe('When get task board by id', () => {
     beforeEach(() => {
-      jest.spyOn(repositoryTaskBoard, 'findOneBy').mockResolvedValue({
+      jest.spyOn(repositoryTaskBoard, 'findOne').mockResolvedValue({
         id: 2,
         name: 'Board 2',
         description: 'Description board 2',
@@ -120,9 +120,10 @@ describe('TaskBoardRepositorySqlite', () => {
 
     test('Then get board with success', (done) => {
       repositoryImpl.getTaskBoardById(2).subscribe((result) => {
-        expect(repositoryTaskBoard.findOneBy).toHaveBeenCalled();
-        expect(repositoryTaskBoard.findOneBy).toHaveBeenCalledWith({
-          id: 2,
+        expect(repositoryTaskBoard.findOne).toHaveBeenCalled();
+        expect(repositoryTaskBoard.findOne).toHaveBeenCalledWith({
+          where: { id: 2 },
+          relations: ['stages'],
         });
 
         expect(result).toEqual({
@@ -142,15 +143,16 @@ describe('TaskBoardRepositorySqlite', () => {
 
     describe('And task board not found', () => {
       beforeEach(() => {
-        jest.spyOn(repositoryTaskBoard, 'findOneBy').mockResolvedValue(null);
+        jest.spyOn(repositoryTaskBoard, 'findOne').mockResolvedValue(null);
       });
 
       test('Then throw task board not found', (done) => {
         repositoryImpl.getTaskBoardById(3).subscribe({
           error: (error) => {
-            expect(repositoryTaskBoard.findOneBy).toHaveBeenCalled();
-            expect(repositoryTaskBoard.findOneBy).toHaveBeenCalledWith({
-              id: 3,
+            expect(repositoryTaskBoard.findOne).toHaveBeenCalled();
+            expect(repositoryTaskBoard.findOne).toHaveBeenCalledWith({
+              where: { id: 3 },
+              relations: ['stages'],
             });
 
             expect(error.message).toEqual('Task board not found');

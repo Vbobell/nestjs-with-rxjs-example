@@ -43,7 +43,9 @@ export class TaskBoardRepositorySqlite
   }
 
   getTaskBoardById(id: number): Observable<TaskBoard> {
-    return from(this.repository.findOneBy({ id })).pipe(
+    return from(
+      this.repository.findOne({ where: { id }, relations: ['stages'] }),
+    ).pipe(
       map((taskBoardEntity: TaskBoardEntitySqlite) => {
         if (!taskBoardEntity) {
           throw new NotFoundException('Task board not found');
@@ -71,7 +73,7 @@ export class TaskBoardRepositorySqlite
         (stage: TaskBoardStageEntitySqlite) => {
           return {
             id: stage.id,
-            boardId: stage.board.id,
+            boardId: entity.id,
             name: stage.name,
           };
         },
