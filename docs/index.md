@@ -8,3 +8,4 @@
 - [switchMap](https://vbobell.github.io/nestjs-with-rxjs-example/content/pt-br/rxjs-switch-map)
 - [tap](https://vbobell.github.io/nestjs-with-rxjs-example/content/pt-br/rxjs-tap)
 - [catchError](https://vbobell.github.io/nestjs-with-rxjs-example/content/pt-br/rxjs-catch-error)
+- [mergeMap](https://vbobell.github.io/nestjs-with-rxjs-example/content/pt-br/rxjs-merge-map)
