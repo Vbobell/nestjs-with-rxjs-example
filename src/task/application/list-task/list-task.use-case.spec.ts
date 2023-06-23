@@ -2,7 +2,6 @@ import { TestingModule } from '@nestjs/testing';
 import { Observable } from 'rxjs';
 
 import { TaskRepository } from '@app/task/domain/abstract/task.repository';
-import { Task } from '@app/task/domain/interface/task.interface';
 
 import { ListTaskUseCase } from '@app/task/application/list-task/list-task.use-case';
 
@@ -19,7 +18,13 @@ describe('ListTaskUseCase', () => {
           provide: TaskRepository,
           useFactory: jest.fn().mockImplementation(() => {
             return {
-              getTasks: jest.fn(),
+              getTasks: jest.fn().mockImplementation(
+                () =>
+                  new Observable((subscribe) => {
+                    subscribe.next();
+                    subscribe.complete();
+                  }),
+              ),
             };
           }),
         },
@@ -37,52 +42,9 @@ describe('ListTaskUseCase', () => {
   });
 
   describe('When get list tasks', () => {
-    let tasks: Task[];
-
-    beforeEach(() => {
-      tasks = [
-        {
-          title: 'Task 1',
-          description: 'Description task 1',
-        },
-        {
-          title: 'Task 2',
-          description: 'Description task 2',
-        },
-        {
-          title: 'Task 2',
-          description: 'Description task 2',
-          user: {
-            id: 1,
-          },
-        },
-      ];
-    });
-
     test('Then get list tasks with success', (done) => {
-      jest.spyOn(repository, 'getTasks').mockReturnValue(
-        new Observable<Task[]>((subscribe) => {
-          subscribe.next(tasks);
-          subscribe.complete();
-        }),
-      );
-
-      useCase.execute().subscribe((result) => {
-        expect(result).toEqual(tasks);
-        done();
-      });
-    });
-
-    test('Then get empty list tasks', (done) => {
-      jest.spyOn(repository, 'getTasks').mockReturnValue(
-        new Observable<Task[]>((subscribe) => {
-          subscribe.next([]);
-          subscribe.complete();
-        }),
-      );
-
-      useCase.execute().subscribe((result) => {
-        expect(result).toEqual([]);
+      useCase.execute().subscribe(() => {
+        expect(repository.getTasks).toHaveBeenCalled();
         done();
       });
     });

@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, map, Observable } from 'rxjs';
 import { Repository } from 'typeorm';
@@ -11,7 +11,7 @@ import { TaskEntitySqlite } from '@app/task/infra/repository/sqlite/entity/task.
 
 @Injectable()
 export class TaskRepositorySqlite implements TaskRepository<TaskEntitySqlite> {
-  private readonly logger = new Logger(TaskEntitySqlite.name);
+  private readonly logger = new Logger(TaskRepositorySqlite.name);
 
   constructor(
     @InjectRepository(TaskEntitySqlite)
@@ -37,11 +37,63 @@ export class TaskRepositorySqlite implements TaskRepository<TaskEntitySqlite> {
     );
   }
 
+  getTask(id: number): Observable<Task> {
+    return from(this.repository.findOneBy({ id })).pipe(
+      map((taskEntity: TaskEntitySqlite) => {
+        if (!taskEntity) {
+          throw new NotFoundException('Task not found');
+        }
+
+        return this.mapEntityToDomain(taskEntity);
+      }),
+      loggerOperator(this.logger, {
+        initLog: {
+          message: 'getTask | execution started',
+        },
+        endLog: {
+          message: 'getTask | finished execution',
+        },
+        errorLog: {
+          message: 'getTask | execution with error',
+        },
+      }),
+    );
+  }
+
+  getTasksByBoardIdAndBoardStageId(
+    params: Pick<Task, 'boardId' | 'boardStageId'>,
+  ): Observable<Task[]> {
+    return from(this.repository.findBy({ ...params })).pipe(
+      map((taskEntities: TaskEntitySqlite[]) => {
+        if (!taskEntities?.length) {
+          throw new NotFoundException('Task not found');
+        }
+
+        return this.mapEntitiesToDomain(taskEntities);
+      }),
+      loggerOperator(this.logger, {
+        initLog: {
+          message: 'getTaskByBoardIdAndBoardStageId | execution started',
+        },
+        endLog: {
+          message: 'getTaskByBoardIdAndBoardStageId | finished execution',
+        },
+        errorLog: {
+          message: 'getTaskByBoardIdAndBoardStageId | execution with error',
+        },
+      }),
+    );
+  }
+
   mapEntityToDomain(taskEntityMemory: TaskEntitySqlite): Task {
     const task: Task = {
       title: taskEntityMemory.title,
       description: taskEntityMemory.description,
-      ...(taskEntityMemory.user ? { user: taskEntityMemory.user } : {}),
+      ...(taskEntityMemory.boardId && { boardId: taskEntityMemory.boardId }),
+      ...(taskEntityMemory.boardStageId && {
+        boardStageId: taskEntityMemory.boardStageId,
+      }),
+      ...(taskEntityMemory.user && { user: taskEntityMemory.user }),
     };
 
     return task;

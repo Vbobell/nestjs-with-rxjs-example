@@ -19,6 +19,8 @@ describe('TaskRepositorySqlite', () => {
           useFactory: jest.fn().mockImplementation(() => {
             return {
               find: jest.fn(),
+              findBy: jest.fn(),
+              findOneBy: jest.fn(),
             };
           }),
         },
@@ -56,6 +58,7 @@ describe('TaskRepositorySqlite', () => {
           title: 'Task 3',
           description: 'Description task 3',
           createdAt: new Date(),
+          boardId: 1,
           user: {
             id: 1,
             name: 'John',
@@ -66,6 +69,7 @@ describe('TaskRepositorySqlite', () => {
           title: 'Task 4',
           description: 'Description task 4',
           createdAt: new Date(),
+          boardId: 1,
           user: {
             id: 2,
             name: 'Joana',
@@ -88,6 +92,7 @@ describe('TaskRepositorySqlite', () => {
           {
             title: 'Task 3',
             description: 'Description task 3',
+            boardId: 1,
             user: {
               id: 1,
               name: 'John',
@@ -96,6 +101,7 @@ describe('TaskRepositorySqlite', () => {
           {
             title: 'Task 4',
             description: 'Description task 4',
+            boardId: 1,
             user: {
               id: 2,
               name: 'Joana',
@@ -104,6 +110,130 @@ describe('TaskRepositorySqlite', () => {
         ]);
 
         done();
+      });
+    });
+  });
+
+  describe('When find task', () => {
+    beforeEach(() => {
+      jest.spyOn(repository, 'findOneBy').mockResolvedValue({
+        id: 1,
+        title: 'Task 1',
+        description: 'Description task 1',
+        boardId: 1,
+        createdAt: new Date(),
+        user: {
+          id: 1,
+          name: 'John',
+        },
+      });
+    });
+
+    test('Then get task with success', (done) => {
+      repositoryImpl.getTask(1).subscribe((result) => {
+        expect(repository.findOneBy).toHaveBeenCalled();
+        expect(repository.findOneBy).toHaveBeenCalledWith({ id: 1 });
+
+        expect(result).toEqual({
+          title: 'Task 1',
+          description: 'Description task 1',
+          boardId: 1,
+          user: {
+            id: 1,
+            name: 'John',
+          },
+        });
+
+        done();
+      });
+    });
+
+    describe('And task not found', () => {
+      beforeEach(() => {
+        jest.spyOn(repository, 'findOneBy').mockResolvedValue(null);
+      });
+
+      test('Then user not found', (done) => {
+        repositoryImpl.getTask(3).subscribe({
+          error: (error) => {
+            expect(repository.findOneBy).toHaveBeenCalled();
+            expect(repository.findOneBy).toHaveBeenCalledWith({ id: 3 });
+
+            expect(error.message).toEqual('Task not found');
+
+            done();
+          },
+        });
+      });
+    });
+  });
+
+  describe('When find tasks by board id and board stage id', () => {
+    beforeEach(() => {
+      jest.spyOn(repository, 'findBy').mockResolvedValue([
+        {
+          id: 1,
+          title: 'Task 1',
+          description: 'Description task 1',
+          boardId: 1,
+          boardStageId: 1,
+          createdAt: new Date(),
+          user: {
+            id: 1,
+            name: 'John',
+          },
+        },
+      ]);
+    });
+
+    test('Then get task with success', (done) => {
+      repositoryImpl
+        .getTasksByBoardIdAndBoardStageId({ boardId: 1, boardStageId: 1 })
+        .subscribe((result) => {
+          expect(repository.findBy).toHaveBeenCalled();
+          expect(repository.findBy).toHaveBeenCalledWith({
+            boardId: 1,
+            boardStageId: 1,
+          });
+
+          expect(result).toEqual([
+            {
+              title: 'Task 1',
+              description: 'Description task 1',
+              boardId: 1,
+              boardStageId: 1,
+              user: {
+                id: 1,
+                name: 'John',
+              },
+            },
+          ]);
+
+          done();
+        });
+    });
+
+    describe('And task not found', () => {
+      beforeEach(() => {
+        jest.spyOn(repository, 'findBy').mockResolvedValue(null);
+      });
+
+      test('Then user not found', (done) => {
+        repositoryImpl
+          .getTasksByBoardIdAndBoardStageId({ boardId: 3, boardStageId: 3 })
+          .subscribe({
+            error: (error) => {
+              expect(repository.findBy).toHaveBeenCalled();
+              expect(repository.findBy).toHaveBeenCalledWith({
+                boardId: 3,
+                boardStageId: 3,
+              });
+
+              expect(error.message).toEqual('Task not found');
+
+              done();
+            },
+          });
       });
     });
   });

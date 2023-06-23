@@ -6,6 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  Index,
 } from 'typeorm';
 
 import { UserEntitySqlite } from '@app/user/infra/repository/sqlite/entity/user.entity';
@@ -28,6 +29,20 @@ export class TaskEntitySqlite {
     nullable: false,
   })
   description: string;
+
+  @Index({ unique: false })
+  @Column('int', {
+    comment: 'Board id of task',
+    nullable: true,
+  })
+  boardId?: number;
+
+  @Index({ unique: false })
+  @Column('int', {
+    comment: 'Board stage id of task',
+    nullable: true,
+  })
+  boardStageId?: number;
 
   @ManyToOne(() => UserEntitySqlite, {
     nullable: true,
